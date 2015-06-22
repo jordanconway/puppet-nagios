@@ -1,0 +1,14 @@
+{
+  "name": "tykeal-nagios",
+  "version": "0.1.0",
+  "author": "tykeal",
+  "summary": "Management module for Nagios",
+  "license": "Apache-2.0",
+  "source": "https://github.com/tykeal/puppet-nagios",
+  "project_page": "https://github.com/tykeal/puppet-nagios",
+  "issues_url": "https://github.com/tykeal/puppet-nagios/issues",
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
+  ]
+}
+
