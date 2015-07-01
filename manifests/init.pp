@@ -1,6 +1,6 @@
 # == Class: nagios
 #
-# Full description of class nagios here.
+# Defines a nagios server and configures it
 #
 # === Parameters
 #
@@ -29,13 +29,24 @@
 #
 # === Authors
 #
-# Author Name <author@domain.com>
+# Andrew J Grimberg <agrimberg@linuxfoundation.org>
 #
 # === Copyright
 #
-# Copyright 2015 Your name here, unless otherwise noted.
+# Copyright 2015 Andrew J Grimberg
 #
-class nagios {
+class nagios (
+  $plugins = $nagios::params::plugins
+) inherits nagios::params {
+  validate_array($plugins)
 
+  # Install nagios
+  package { $nagios::params::basename:
+    ensure => present,
+  }
 
+  # Install selected plugins
+  package { $plugins:
+    ensure => present,
+  }
 }

@@ -1,5 +1,5 @@
 require 'spec_helper'
-describe 'nagios' do
+describe 'nagios::params' do
   # Force our osfamily so that our params class doesn't croak
   let(:facts) {
     {
@@ -8,9 +8,7 @@ describe 'nagios' do
   }
 
   context 'with defaults for all parameters' do
-    it { should contain_class('nagios') }
-    it { should contain_package('nagios') }
-    it { should contain_package('nagios-plugins-all') }
+    it { should contain_class('nagios::params') }
   end
 end
 
