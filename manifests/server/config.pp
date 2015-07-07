@@ -89,7 +89,7 @@ class nagios::server::config (
     path    => $nagios::params::resourcedir,
     purge   => true,
     recurse => true,
-    before  => Class['nagios::server::config::import'],
+    require => Class['nagios::server::config::import'],
   }
 
   Anchor['nagios::server::config::begin'] ->
