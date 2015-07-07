@@ -366,7 +366,7 @@ class nagios::params {
     'admins'        => {
       'resourcedef' => {
         'alias'     => 'Nagios Administrators',
-        'members'   => 'nagioadmin',
+        'members'   => 'nagiosadmin',
       },
     },
   }
