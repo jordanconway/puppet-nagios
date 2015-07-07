@@ -19,7 +19,6 @@ class nagios::server::config::import (
   validate_string($nagiostag)
 
   # resource collection, collect all the nagios types
-  # lint:ignore:storeconfigs
   Nagios_command <<| tag == $nagiostag |>> { }
   Nagios_contactgroup <<| tag == $nagiostag |>> { }
   Nagios_contact <<| tag == $nagiostag |>> { }
@@ -34,5 +33,9 @@ class nagios::server::config::import (
   Nagios_servicegroup <<| tag == $nagiostag |>> { }
   Nagios_service <<| tag == $nagiostag |>> { }
   Nagios_timeperiod <<| tag == $nagiostag |>> { }
-  # lint:endignore
+
+  # specific File resources are exported for each of the nagios_*
+  # resources to get around issues with how file targets don't make the
+  # files managed from the point of view of purge.
+  File <<| tag == $nagiostag |>> { }
 }

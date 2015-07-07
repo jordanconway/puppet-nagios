@@ -73,15 +73,24 @@ define nagios::resource (
 
   # determine what our target filename should be
   $name_down = downcase(regsubst($name, '\s+', '_'))
-  $target = "${nagios::params::resourcedir}/${type}_${name_down}.cfg"
+  $target = "${nagios::params::resourcedir}/${type}_${::fqdn}_${name_down}.cfg"
+
+  $_nagiostag = $nagiostag ? {
+    ''      => undef,
+    default => $nagiostag,
+  }
+
+  # Due to how nagios_* resources don't actually create File resources with
+  # their target, we're going to export a File resource of the target
+  @@file { $target:
+    ensure => file,
+    tag    => $_nagiostag,
+  }
 
   $mergedef = {
-    ensure    => 'present',
-    target    => $target,
-    tag       => $nagiostag ? {
-      ''      => undef,
-      default => $nagiostag,
-    }
+    ensure => 'present',
+    target => $target,
+    tag    => $_nagiostag,
   }
 
   $_resourcedef = merge($defaultresourcedef, $resourcedef, $mergedef)
