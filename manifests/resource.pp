@@ -84,12 +84,12 @@ define nagios::resource (
   # their target, we're going to export a File resource of the target
   @@file { $target:
     ensure => file,
+    mode   => '0644',
     tag    => $_nagiostag,
   }
 
   $mergedef = {
     ensure => 'present',
-    mode   => '0644',
     target => $target,
     tag    => $_nagiostag,
   }
