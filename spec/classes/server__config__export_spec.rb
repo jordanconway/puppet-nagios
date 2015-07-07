@@ -40,6 +40,11 @@ describe 'nagios::server::config::export' do
             'resourcedef'       => {},
           },
         },
+        'defaulthostgroups'  => {
+          'defaulthostgroup' => {
+            'resourcedef'    => {},
+          },
+        },
         'localcommands'   => {
           'localcommand'  => {
             'resourcedef' => {},
@@ -63,6 +68,14 @@ describe 'nagios::server::config::export' do
         },
         'localcontactgroupdefaults' => {
           'use'                     => 'defaultcontactgroup',
+        },
+        'localhostgroups'  => {
+          'localhostgroup' => {
+            'resourcedef'  => {},
+          },
+        },
+        'localhostgroupdefaults' => {
+          'use'                  => 'defaulthostgroup',
         },
         'nagiostag'         => 'test',
         'templatecontact'   => {
@@ -105,6 +118,10 @@ describe 'nagios::server::config::export' do
       'type' => 'contactgroup',
     ) }
 
+    it { should contain_nagios__resource('defaulthostgroup').with(
+      'type' => 'hostgroup',
+    ) }
+
     it { should contain_nagios__resource('localcommand').with(
       'type'               => 'command',
       'defaultresourcedef' => {
@@ -123,6 +140,13 @@ describe 'nagios::server::config::export' do
       'type'               => 'contactgroup',
       'defaultresourcedef' => {
         'use'              => 'defaultcontactgroup',
+      },
+    ) }
+
+    it { should contain_nagios__resource('localhostgroup').with(
+      'type'               => 'hostgroup',
+      'defaultresourcedef' => {
+        'use'              => 'defaulthostgroup',
       },
     ) }
 

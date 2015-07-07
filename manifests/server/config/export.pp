@@ -17,12 +17,15 @@ class nagios::server::config::export (
   $defaultcommands,
   $defaultcontacts,
   $defaultcontactgroups,
+  $defaulthostgroups,
   $localcommands,
   $localcommanddefaults,
   $localcontacts,
   $localcontactdefaults,
   $localcontactgroups,
   $localcontactgroupdefaults,
+  $localhostgroups,
+  $localhostgroupdefaults,
   $nagiostag,
   $templatecontact,
   $templatehost,
@@ -32,12 +35,15 @@ class nagios::server::config::export (
   validate_hash($defaultcommands)
   validate_hash($defaultcontacts)
   validate_hash($defaultcontactgroups)
+  validate_hash($defaulthostgroups)
   validate_hash($localcommands)
   validate_hash($localcommanddefaults)
   validate_hash($localcontacts)
   validate_hash($localcontactdefaults)
   validate_hash($localcontactgroups)
   validate_hash($localcontactgroupdefaults)
+  validate_hash($localhostgroups)
+  validate_hash($localhostgroupdefaults)
   validate_string($nagiostag)
   validate_hash($templatecontact)
   validate_hash($templatehost)
@@ -91,6 +97,12 @@ class nagios::server::config::export (
     nagiostag          => $nagiostag,
   })
 
+  create_resources('nagios::resource', $defaulthostgroups, {
+    'type'             => 'hostgroup',
+    defaultresourcedef => {},
+    nagiostag          => $nagiostag,
+  })
+
   # site local commands
   create_resources('nagios::resource', $localcommands, {
     'type'             => 'command',
@@ -107,6 +119,12 @@ class nagios::server::config::export (
   create_resources('nagios::resource', $localcontactgroups, {
     'type'             => 'contactgroup',
     defaultresourcedef => $localcontactgroupdefaults,
+    nagiostag          => $nagiostag,
+  })
+
+  create_resources('nagios::resource', $localhostgroups, {
+    'type'             => 'hostgroup',
+    defaultresourcedef => $localhostgroupdefaults,
     nagiostag          => $nagiostag,
   })
 }

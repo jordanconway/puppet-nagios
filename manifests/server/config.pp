@@ -4,20 +4,6 @@
 #
 # === Variables
 #
-# [*plugins*]
-#   The list of all plugin packages that should be installed on this
-#   server. This defaults to nagios-plugins-all which is an EPEL meta
-#   package pulling in all nagios plugins.
-#
-#   NOTE: The nagios::client also has a plugins definition which
-#   defaults to empty. If the nagios and nagios::client classes are both
-#   defined on a system (which would be expected) then the packages
-#   between both the server and client classes need to safely resolve.
-#   As such it is recommended to force override the
-#   nagios::client::plugins to be an empty array on the nagios server
-#
-#   Type: array
-#
 # === Authors
 #
 # Andrew J Grimberg <agrimberg@linuxfoundation.org>
@@ -30,12 +16,15 @@ class nagios::server::config (
   $defaultcommands,
   $defaultcontacts,
   $defaultcontactgroups,
+  $defaulthostgroups,
   $localcommands,
   $localcommanddefaults,
   $localcontacts,
   $localcontactdefaults,
   $localcontactgroups,
   $localcontactgroupdefaults,
+  $localhostgroups,
+  $localhostgroupdefaults,
   $nagiostag,
   $templatecontact,
   $templatehost,
@@ -45,12 +34,15 @@ class nagios::server::config (
   validate_hash($defaultcommands)
   validate_hash($defaultcontacts)
   validate_hash($defaultcontactgroups)
+  validate_hash($defaulthostgroups)
   validate_hash($localcommands)
   validate_hash($localcommanddefaults)
   validate_hash($localcontacts)
   validate_hash($localcontactdefaults)
   validate_hash($localcontactgroups)
   validate_hash($localcontactgroupdefaults)
+  validate_hash($localhostgroups)
+  validate_hash($localhostgroupdefaults)
   validate_string($nagiostag)
   validate_hash($templatecontact)
   validate_hash($templatehost)
@@ -67,12 +59,15 @@ class nagios::server::config (
     defaultcommands           => $defaultcommands,
     defaultcontacts           => $defaultcontacts,
     defaultcontactgroups      => $defaultcontactgroups,
+    defaulthostgroups         => $defaulthostgroups,
     localcommands             => $localcommands,
     localcommanddefaults      => $localcommanddefaults,
     localcontacts             => $localcontacts,
     localcontactdefaults      => $localcontactdefaults,
     localcontactgroups        => $localcontactgroups,
     localcontactgroupdefaults => $localcontactgroupdefaults,
+    localhostgroups           => $localhostgroups,
+    localhostgroupdefaults    => $localhostgroupdefaults,
     nagiostag                 => $nagiostag,
     templatecontact           => $templatecontact,
     templatehost              => $templatehost,

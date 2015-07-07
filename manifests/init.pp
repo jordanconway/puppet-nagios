@@ -42,6 +42,12 @@
 #   Type: hash
 #   Default: see $nagios::params::defaultcontactgroups
 #
+# [*defaulthostgroups*]
+#   The default host groups that are to be setup on the system.
+#
+# Type: hash
+#   Default: see $nagios::params::defaulthostgroups
+#
 # [*localcommands*]
 #   Custom commands that should be added to the system in addition to
 #   the defaultcommands. This allows you to take the pre-defined
@@ -93,6 +99,19 @@
 #
 # [*localcontactgroupdefaults*]
 #   Custom defaults that should be applied to localcontactgroups.
+#
+#   Type: hash
+#   Default: {}
+#
+# [*localhostgroups*]
+#   The local host groups that are to be used on this system apart from
+#   the default host groups previously defined
+#
+#   Type: hash
+#   Default: {}
+#
+# [*localhostgroupdefaults*]
+#   Custom defaults that should be applied to the localhostgroups.
 #
 #   Type: hash
 #   Default: {}
@@ -162,12 +181,15 @@ class nagios (
   $defaultcommands           = $nagios::params::defaultcommands,
   $defaultcontacts           = $nagios::params::defaultcontacts,
   $defaultcontactgroups      = $nagios::params::defaultcontactgroups,
+  $defaulthostgroups         = $nagios::params::defaulthostgroups,
   $localcommands             = {},
   $localcommanddefaults      = {},
   $localcontacts             = {},
   $localcontactdefaults      = {},
   $localcontactgroups        = {},
   $localcontactgroupdefaults = {},
+  $localhostgroups           = {},
+  $localhostgroupdefaults    = {},
   $nagiostag                 = $::fqdn,
   $plugins                   = $nagios::params::plugins,
   $templatecontact           = $nagios::params::templatecontact,
@@ -178,12 +200,15 @@ class nagios (
   validate_hash($defaultcommands)
   validate_hash($defaultcontacts)
   validate_hash($defaultcontactgroups)
+  validate_hash($defaulthostgroups)
   validate_hash($localcommands)
   validate_hash($localcommanddefaults)
   validate_hash($localcontacts)
   validate_hash($localcontactdefaults)
   validate_hash($localcontactgroups)
   validate_hash($localcontactgroupdefaults)
+  validate_hash($localhostgroups)
+  validate_hash($localhostgroupdefaults)
   validate_string($nagiostag)
   validate_array($plugins)
   validate_hash($templatecontact)
@@ -203,12 +228,15 @@ class nagios (
     defaultcommands           => $defaultcommands,
     defaultcontacts           => $defaultcontacts,
     defaultcontactgroups      => $defaultcontactgroups,
+    defaulthostgroups         => $defaulthostgroups,
     localcommands             => $localcommands,
     localcommanddefaults      => $localcommanddefaults,
     localcontacts             => $localcontacts,
     localcontactdefaults      => $localcontactdefaults,
     localcontactgroups        => $localcontactgroups,
     localcontactgroupdefaults => $localcontactgroupdefaults,
+    localhostgroups           => $localhostgroups,
+    localhostgroupdefaults    => $localhostgroupdefaults,
     nagiostag                 => $nagiostag,
     templatecontact           => $templatecontact,
     templatehost              => $templatehost,

@@ -1,12 +1,4 @@
 class nagios::params {
-  # default address to use
-#  $address       = $::ipaddress
-#  $check_command = 'check-host-alive'
-#  $hostgroups    = [
-#      'Other'
-#    ]
-#  $host_use = 'generic-host'
-
   $defaulthostconfig     = {
     'address'            => $::ipaddress,
     'alias'              => $::hostname,
@@ -14,7 +6,7 @@ class nagios::params {
     'check_interval'     => '5',
     'ensure'             => 'present',
     'host_name'          => $::fqdn,
-    'hostgroups'         => [$::operatingsystem],
+    'hostgroups'         => ['Other'],
     'max_check_attempts' => '3',
     'retry_interval'     => '1',
     'use'                => 'generic-host',
@@ -367,6 +359,14 @@ class nagios::params {
       'resourcedef' => {
         'alias'     => 'Nagios Administrators',
         'members'   => 'nagiosadmin',
+      },
+    },
+  }
+
+  $defaulthostgroups = {
+    'Other'         => {
+      'resourcedef' => {
+        'alias'     => 'Default Host Group',
       },
     },
   }
