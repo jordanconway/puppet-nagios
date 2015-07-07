@@ -191,94 +191,34 @@ class nagios (
   validate_hash($templateservice)
   validate_hash($templatetimeperiod)
 
-  # Install nagios
-  package { $nagios::params::basename:
-    ensure => present,
+  # Anchors
+  anchor { 'nagios::begin': }
+  anchor { 'nagios::end': }
+
+  class { 'nagios::server::install':
+    plugins => $plugins,
   }
 
-  # Install selected plugins
-  package { $plugins:
-    ensure => present,
+  class { 'nagios::server::config':
+    defaultcommands           => $defaultcommands,
+    defaultcontacts           => $defaultcontacts,
+    defaultcontactgroups      => $defaultcontactgroups,
+    localcommands             => $localcommands,
+    localcommanddefaults      => $localcommanddefaults,
+    localcontacts             => $localcontacts,
+    localcontactdefaults      => $localcontactdefaults,
+    localcontactgroups        => $localcontactgroups,
+    localcontactgroupdefaults => $localcontactgroupdefaults,
+    nagiostag                 => $nagiostag,
+    templatecontact           => $templatecontact,
+    templatehost              => $templatehost,
+    templateservice           => $templateservice,
+    templatetimeperiod        => $templatetimeperiod,
   }
 
-  # build out needed templates
-  create_resources('nagios::resource', $templatecontact, {
-    'type'             => 'contact',
-    defaultresourcedef => {},
-    nagiostag          => $nagiostag,
-  })
-
-  create_resources('nagios::resource', $templatehost, {
-    'type'             => 'host',
-    defaultresourcedef => {},
-    nagiostag          => $nagiostag,
-  })
-
-  create_resources('nagios::resource', $templateservice, {
-    'type'             => 'service',
-    defaultresourcedef => {},
-    nagiostag          => $nagiostag,
-  })
-
-  create_resources('nagios::resource', $templatetimeperiod, {
-    'type'             => 'timeperiod',
-    defaultresourcedef => {},
-    nagiostag          => $nagiostag,
-  })
-
-  # setup the default commands
-  create_resources('nagios::resource', $defaultcommands, {
-    'type'             => 'command',
-    defaultresourcedef => {},
-    nagiostag          => $nagiostag,
-  })
-
-  create_resources('nagios::resource', $defaultcontacts, {
-    'type'             => 'contact',
-    defaultresourcedef => {},
-    nagiostag          =>  $nagiostag,
-  })
-
-  create_resources('nagios::resource', $defaultcontactgroups, {
-    'type'             => 'contactgroup',
-    defaultresourcedef => {},
-    nagiostag          => $nagiostag,
-  })
-
-  # site local commands
-  create_resources('nagios::resource', $localcommands, {
-    'type'             => 'command',
-    defaultresourcedef => $localcommanddefaults,
-    nagiostag          => $nagiostag,
-  })
-
-  create_resources('nagios::resource', $localcontacts, {
-    'type'             => 'contact',
-    defaultresourcedef => $localcontactdefaults,
-    nagiostag          => $nagiostag,
-  })
-
-  create_resources('nagios::resource', $localcontactgroups, {
-    'type'             => 'contactgroup',
-    defaultresourcedef => $localcontactgroupdefaults,
-    nagiostag          => $nagiostag,
-  })
-
-  # resource collection, collect all the nagios types
-  # lint:ignore:storeconfigs
-  Nagios_command <<| tag == $nagiostag |>> { }
-  Nagios_contactgroup <<| tag == $nagiostag |>> { }
-  Nagios_contact <<| tag == $nagiostag |>> { }
-  Nagios_hostdependency <<| tag == $nagiostag |>> { }
-  Nagios_hostescalation <<| tag == $nagiostag |>> { }
-  Nagios_hostextinfo <<| tag == $nagiostag |>> { }
-  Nagios_hostgroup <<| tag == $nagiostag |>> { }
-  Nagios_host <<| tag == $nagiostag |>> { }
-  Nagios_servicedependency <<| tag == $nagiostag |>> { }
-  Nagios_serviceescalation <<| tag == $nagiostag |>> { }
-  Nagios_serviceextinfo <<| tag == $nagiostag |>> { }
-  Nagios_servicegroup <<| tag == $nagiostag |>> { }
-  Nagios_service <<| tag == $nagiostag |>> { }
-  Nagios_timeperiod <<| tag == $nagiostag |>> { }
-  # lint:endignore
+  Anchor['nagios::begin'] ->
+    Class['nagios::server::install'] ->
+    Class['nagios::server::config'] ~>
+#    Class['nagios::server::service'] ->
+  Anchor['nagios::end']
 }
