@@ -23,8 +23,6 @@ define nagios::resource::hostextinfo (
 ) {
   validate_hash($resourcedef)
 
-  $name_down = downcase(regsubst($name, '\s+', '_'))
-
   # host extinfo must always be tied to a host. Set $::fqdn as that
   # if it isn't already defined
   $resourcemerge = {
@@ -33,6 +31,6 @@ define nagios::resource::hostextinfo (
 
   $_mergedef = merge($resourcemerge, $resourcedef)
 
-  $_myresources = hash([$name_down, $_mergedef])
+  $_myresources = hash([$name, $_mergedef])
   create_resources('@@nagios_hostextinfo', $_myresources)
 }

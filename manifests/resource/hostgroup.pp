@@ -23,8 +23,6 @@ define nagios::resource::hostgroup (
 ) {
   validate_hash($resourcedef)
 
-  $name_down = downcase(regsubst($name, '\s+', '_'))
-
-  $_myresources = hash([$name_down, $resourcedef])
+  $_myresources = hash([$name, $resourcedef])
   create_resources('@@nagios_hostgroup', $_myresources)
 }

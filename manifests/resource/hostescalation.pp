@@ -23,8 +23,6 @@ define nagios::resource::hostescalation (
 ) {
   validate_hash($resourcedef)
 
-  $name_down = downcase(regsubst($name, '\s+', '_'))
-
   # host escalations must always be tied to a host. Set $::fqdn as that
   # if it isn't already defined
   $resourcemerge = {
@@ -33,6 +31,6 @@ define nagios::resource::hostescalation (
 
   $_mergedef = merge($resourcemerge, $resourcedef)
 
-  $_myresources = hash([$name_down, $_mergedef])
+  $_myresources = hash([$name, $_mergedef])
   create_resources('@@nagios_hostescalation', $_myresources)
 }
