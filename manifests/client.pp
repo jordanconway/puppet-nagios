@@ -4,36 +4,145 @@
 #
 # === Parameters
 #
-# [*address*]
-#   The address that should be used for nagios checks. This defaults to
-#   $::ipaddress via $nagios::params::address
+# [*baseservices*]
+#   Base services that a system should have applied to it. This
+#   generally a sitewide configuration and would be done via an APL
+#   hiera lookup at a less secific level than the host itself.
 #
-# [*baseresources*]
-#   A resource hash that would be safe to pass to nagios::resource. This
-#   is expected to be specified at a common layer in hiera for common
-#   checks that all clients in an environment should have
+#   The format of the hash is as follows and is similar for all of the
+#   various resource types, with the exception of the default* types
 #
-# [*check_command*]
-#   The command definition to use to check the host is alive. Defaults
-#   to 'check-host-alive'
+#   $baseservices = {
+#     'service-name'                     => {
+#       'resourcedef'                    => {
+#         'nagios_service_variable_name' => 'nagios_service variable value'
+#       }
+#     }
+#   }
 #
-# [*extraresources*]
-#   A resource hash that would be safe to pass to nagios::resource. This
-#   is expected to be any custom checks that this client should have in
-#   addition to the baseresources
+#   Type: hash
+#   Default: {}
 #
-# [*hostgroups*]
-#   Array of hostgroups that this client should be part of
+# [*defaulthostconfig*]
+#   The default nagios_host configuration. This is combined with the
+#   information from $hostconfig (with $hostconfig overriding any values
+#   that are defined in this) to fully create the nagios_host
+#   configuration
 #
-# [*host_use*]
-#   The template to use for the host definition, defaults to
-#   'generic-host'
+#   Unlike the all of the default* definitions use a format that is
+#   similar to the $baseservices defintion except they do away with the
+#   top two layers and only deal with the inner most hash (which would
+#   be the 'resourcedef' layer)
+#
+#   $defaulthostconfig = {
+#     'nagios_host_variable_name' => 'nagios_host variable value',
+#   }
+#
+#   Type: hash
+#   Default: see $nagios::params::defaulthostconfig
+#
+# [*defaulthostdependencies*]
+#   The default host dependencies that are combined with
+#   $hostdependencies
+#
+#   Type: hash
+#   Default: {}
+#
+# [*defaulthostextinfo*]
+#   The default host extinfo that is combined with $hostextinfo
+#
+#   Type: hash
+#   Default: see $nagios::params::defaulthostextinfo
+#
+# [*defaultserviceconfig*]
+#   The default service options that are combined with $hostservices as
+#   well as $baseservices
+#
+#   Type: hash
+#   Default: see $nagios::params::defaultserviceconfig
+#
+# [*defaultservicedependencies*]
+#   The default service dependencies that are combined with
+#   $hostservicedependencies
+#
+#   Type: hash
+#   Default: {}
+#
+# [*defaultserviceescalation*]
+#   The default service escalation that is combined with
+#   $hostserviceescalation
+#
+#   Type: hash
+#   Default: see $nagios::params::defaultserviceescalation
+#
+# [*defaultserviceextinfo*]
+#   The default service extinfo that is combined with
+#   $hostserviceextinfo
+#
+#   Type: hash
+#   Default: see $nagios::params::defaultserviceextinfo
+#
+# [*hostconfig*]
+#   The nagios_host configuraiton that is combined with
+#   $defaulthostconfig.
+#
+#   Type: hash
+#   Default: {}
+#
+# [*hostdependencies*]
+#   The nagios_hostdependencies that is combined with
+#   $defaulthostdependencies
+#
+#   Type: hash
+#   Default: {}
+#
+# [*hostextinfo*]
+#   The nagios_hostextinfo that is combined with $defaulthostextinfo
+#
+#   Type: hash
+#   Default: {}
+#
+# [*hostservices*]
+#   The nagios_service definitions specific to this host. This is
+#   combined with $defaultserviceconfig
+#
+#   Type: hash
+#   Default: {}
+#
+# [*hostservicedependencies*]
+#   The nagios_servicedepency defintions specific to this host. This is
+#   combined with $defaultservicedependencies
+#
+#   Type: hash
+#   Default: {}
+#
+# [*hostserviceescalation*]
+#   The nagios_serviceescalation definitions specific to this host. This
+#   is combined with $defaultserviceescalation
+#
+#   Type: hash
+#   Default: {}
+#
+# [*hostserviceextinfo*]
+#   The nagios_serviceextinfo definitions specific to this host. This is
+#   combined with $defaultserviceextinfo
+#
+#   Type: hash
+#   Default: {}
 #
 # [*nagiostag*]
-#   Tag used to identify the nagios server that this client should be
-#   exported into
+#   The nagios server / tag that will be used for collecting the
+#   exported resources.
 #
-# === Variables
+#   Type: string
+#   Default: ''
+#
+# [*plugins*]
+#   The plugins that need to be installed on this nagios client
+#   (generally for NRPE reasons)
+#
+#   Type: array
+#   Default: []
 #
 # === Authors
 #
@@ -43,34 +152,34 @@
 #
 # Copyright 2015 Andrew J Grimberg
 #
-#class nagios::client (
-#  $address        = $nagios::params::address,
-#  $baseresources  = {},
-#  $check_command  = $nagios::params::check_command,
-#  $extraresources = {},
-#  $hostgroups     = $nagios::params::hostgroups,
-#  $host_use       = $nagios::params::host_use,
-#  $nagiostag      = '',
-#  $parents        = []
-#) inherits nagios::params {
 class nagios::client (
-  $baseservices            = {},
-  $defaulthostconfig       = $nagios::params::defaulthostconfig,
-  $defaultserviceconfig    = $nagios::params::defaultserviceconfig,
-  $hostconfig              = {},
-  $hostdependencies        = {},
-  $hostextinfo             = {},
-  $hostservices            = {},
-  $hostservicedependencies = {},
-  $hostserviceescalation   = {},
-  $hostserviceextinfo      = {},
-  $nagiostag               = '',
-  $plugins                 = [],
+  $baseservices               = {},
+  $defaulthostconfig          = $nagios::params::defaulthostconfig,
+  $defaulthostdependencies    = {},
+  $defaulthostextinfo         = $nagios::params::defaulthostextinfo,
+  $defaultserviceconfig       = $nagios::params::defaultserviceconfig,
+  $defaultservicedependencies = {},
+  $defaultserviceescalation   = $nagios::params::defaultserviceescalation,
+  $defaultserviceextinfo      = $nagios::params::defaultserviceextinfo,
+  $hostconfig                 = {},
+  $hostdependencies           = {},
+  $hostextinfo                = {},
+  $hostservices               = {},
+  $hostservicedependencies    = {},
+  $hostserviceescalation      = {},
+  $hostserviceextinfo         = {},
+  $nagiostag                  = '',
+  $plugins                    = [],
 ) inherits nagios::params {
 
   validate_hash($baseservices)
   validate_hash($defaulthostconfig)
+  validate_hash($defaulthostdependencies)
+  validate_hash($defaulthostextinfo)
   validate_hash($defaultserviceconfig)
+  validate_hash($defaultservicedependencies)
+  validate_hash($defaultserviceescalation)
+  validate_hash($defaultserviceextinfo)
   validate_hash($hostconfig)
   validate_hash($hostdependencies)
   validate_hash($hostextinfo)
@@ -89,9 +198,57 @@ class nagios::client (
     resourcedef        => $hostconfig,
   }
 
-  # create any base resource
-#  create_resources('nagios::resource', $baseresources, $create_options)
+  # create any base services
+  create_resources('nagios::resource', $baseservices, {
+    'type'             => 'service',
+    defaultresourcedef => $defaultserviceconfig,
+    nagiostag          => $nagiostag,
+  })
 
-  # create any extra resources
-#  create_resources('nagios::resource', $extraresources, $create_options)
+  # create any host dependencies
+  create_resources('nagios::resource', $hostdependencies, {
+    'type'             => 'hostdependency',
+    defaultresourcedef => $defaulthostdependencies,
+    nagiostag          => $nagiostag,
+  })
+
+  # create any hostextinfo
+  create_resources('nagios::resource', $hostextinfo, {
+    'type'             => 'hostextinfo',
+    defaultresourcedef => $defaulthostextinfo,
+    nagiostag          => $nagiostag,
+  })
+
+  # create host specific services
+  create_resources('nagios::resource', $hostservices, {
+    'type'             => 'service',
+    defaultresourcedef => $defaultserviceconfig,
+    nagiostag          => $nagiostag,
+  })
+
+  # create service dependencies
+  create_resources('nagios::resource', $hostservicedependencies, {
+    'type'             => 'servicedependency',
+    defaultresourcedef => $defaultservicedependencies,
+    nagiostag          => $nagiostag,
+  })
+
+  # create service escalations
+  create_resources('nagios::resource', $hostserviceescalation, {
+    'type'             => 'serviceescalation',
+    defaultresourcedef => $defaultserviceescalation,
+    nagiostag          => $nagiostag,
+  })
+
+  # create service extinfo
+  create_resources('nagios::resource', $hostserviceextinfo, {
+    'type'             => 'serviceextinfo',
+    defaultresourcedef => $defaultserviceextinfo,
+    nagiostag          => $nagiostag,
+  })
+
+  # install all specified plugins
+  package { $plugins:
+    ensure => installed,
+  }
 }
