@@ -53,7 +53,7 @@ describe 'nagios::server::config' do
       'path'    => '/etc/nagios/objects',
       'purge'   => true,
       'recurse' => true,
-    ).that_requires('Class[nagios::server::config::import]') }
+    ).that_comes_before('Class[nagios::server::config::import]') }
   end
 end
 
