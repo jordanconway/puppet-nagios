@@ -49,6 +49,7 @@ describe 'nagios::resource', :type => :define do
         'resourcedef'      => {
             'ensure'       => 'present',
             'command_line' => 'testcommand',
+            'mode'         => '0644',
             'target'       => '/etc/nagios/objects/command_test.example.com_test_me.cfg',
             'tag'          => 'nagios-foo',
         },

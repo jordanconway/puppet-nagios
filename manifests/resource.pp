@@ -89,6 +89,7 @@ define nagios::resource (
 
   $mergedef = {
     ensure => 'present',
+    mode   => '0644',
     target => $target,
     tag    => $_nagiostag,
   }
