@@ -17,7 +17,7 @@ describe 'nagios::server::service' do
       'ensure'     => 'running',
       'enable'     => true,
       'hasrestart' => true,
-      'restart'    => 'nagios -v /etc/nagios/nagios.cfg && systemctl reload nagios.service',
+      'restart'    => 'nagios -v /etc/nagios/nagios.cfg && service nagios reload',
     ) }
   end
 

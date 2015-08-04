@@ -26,8 +26,9 @@ class nagios::server::service {
     ensure     => running,
     enable     => true,
     hasrestart => true,
+    provider   => 'redhat',
     # lint:ignore:80chars
-    restart    => "${nagios::params::basename} -v ${nagios::params::conffile} && systemctl reload nagios.service",
+    restart    => "${nagios::params::basename} -v ${nagios::params::conffile} && service nagios reload",
     # lint:endignore
   }
 }
