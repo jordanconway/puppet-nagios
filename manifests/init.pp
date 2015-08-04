@@ -252,6 +252,6 @@ class nagios (
     Class['nagios::server::service'] ->
   Anchor['nagios::end']
 
-  Class['nagios::server::config::import'] ~>
-  Class['nagios::server::service']
+#  Class['nagios::server::config::import'] ~>
+#  Class['nagios::server::service']
 }
