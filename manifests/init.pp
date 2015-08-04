@@ -244,9 +244,11 @@ class nagios (
     templatetimeperiod        => $templatetimeperiod,
   }
 
+  include nagios::server::service
+
   Anchor['nagios::begin'] ->
     Class['nagios::server::install'] ->
     Class['nagios::server::config'] ~>
-#    Class['nagios::server::service'] ->
+    Class['nagios::server::service'] ->
   Anchor['nagios::end']
 }

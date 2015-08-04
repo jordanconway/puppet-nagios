@@ -15,7 +15,7 @@ describe 'nagios' do
     it { should contain_anchor('nagios::begin') }
     it { should contain_class('nagios::server::install') }
     it { should contain_class('nagios::server::config') }
-    #it { should contain_class('nagios::server::service') }
+    it { should contain_class('nagios::server::service') }
     it { should contain_anchor('nagios::end') }
 
     # our testing will only cause the default nagios::resources to

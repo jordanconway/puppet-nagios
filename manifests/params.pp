@@ -381,6 +381,7 @@ class nagios::params {
 
   $rootdir     = "/etc/${basename}"
   $resourcedir = "${rootdir}/objects"
+  $conffile    = "${rootdir}/nagios.cfg"
 
   # default list of plugins to install
   # only define nagios-plugins-all by default as that will pull in all
