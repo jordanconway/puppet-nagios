@@ -162,9 +162,11 @@ class nagios::params {
     'perfdata_timeout'                            => 5,
     # lint:ignore:80chars
     'precached_object_file'                       => "/var/cache/${basename}/objects.precache",
-    'private_resource_file'                       => "/etc/${basename}/private/resource.cfg",
     # lint:endignore
     'process_performance_data'                    => 0,
+    # lint:ignore:80chars
+    'resource_file'                               => "/etc/${basename}/private/resource.cfg",
+    # lint:endignore
     'retain_state_information'                    => 1,
     'retained_contact_host_attribute_mask'        => 0,
     'retained_contact_service_attribute_mask'     => 0,
