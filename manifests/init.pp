@@ -154,6 +154,20 @@
 #   Type: array
 #   Default: ['nagios-plugins-all']
 #
+# [*resource_macros*]
+#   An array listing the values for the $USER1$ style resource macros.
+#   The array order itself will determine which $USER<NUM>$ the macro
+#   receives.
+#
+#   Type: array
+#   Default: One array member setting $USER1$ = the nagios plugins path
+#
+#   RH x86_64 systems would end up as [ '/usr/lib64/nagios/plugins' ]
+#
+#   NOTE: The default params array is _not_ merged with a user supplied
+#   array, as such, if adding macros you should make sure that you set
+#   the plugins macro (normal default is for $USER1$)
+#
 # [*templatecontact*]
 #   The default template definition(s) for contacts. These are taken
 #   from the EPEL nagios installation.
@@ -208,6 +222,7 @@ class nagios (
   $nagios_cfg                = {},
   $nagiostag                 = $::fqdn,
   $plugins                   = $nagios::params::plugins,
+  $resource_macros           = $nagios::params::resource_macros,
   $templatecontact           = $nagios::params::templatecontact,
   $templatehost              = $nagios::params::templatehost,
   $templateservice           = $nagios::params::templateservice,
@@ -259,6 +274,7 @@ class nagios (
     localhostgroupdefaults    => $localhostgroupdefaults,
     nagios_cfg                => $_nagios_cfg,
     nagiostag                 => $nagiostag,
+    resource_macros           => $resource_macros,
     templatecontact           => $templatecontact,
     templatehost              => $templatehost,
     templateservice           => $templateservice,

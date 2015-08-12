@@ -205,6 +205,20 @@ class nagios::params {
   $default_nagios_config = merge($base_default_nagios_cfg, $os_default_nagios_cfg)
   # lint:endignore
 
+  $user1 = $::osfamily ? {
+    'Debian'   => '/usr/lib/nagios/plugins',
+    'RedHat'   => $::architecture ? {
+      'x86_64' => '/usr/lib64/nagios/plugins',
+      default  => '/usr/lib/nagios/plugins',
+    },
+  }
+
+  # default resource macros
+  # The ordering of this array will determine the the macro numbering
+  $resource_macros = [
+    $user1
+  ]
+
   # base templates and commands
   $templatecontact = {
     'generic-contact'                   => {
@@ -535,14 +549,6 @@ class nagios::params {
       'resourcedef' => {
         'alias'     => 'Default Host Group',
       },
-    },
-  }
-
-  $user1 = $::osfamily ? {
-    'Debian'   => '/usr/lib/nagios/plugins',
-    'RedHat'   => $::architecture ? {
-      'x86_64' => '/usr/lib64/nagios/plugins',
-      default  => '/usr/lib/nagios/plugins',
     },
   }
 

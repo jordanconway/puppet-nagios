@@ -150,6 +150,7 @@ describe 'nagios::server::config' do
           'use_retained_program_state'                  => 1,
         },
         'nagiostag'                 => '',
+        'resource_macros'           => [ '/usr/lib64/nagios/plugins' ],
         'templatecontact'           => {},
         'templatehost'              => {},
         'templateservice'           => {},
@@ -288,6 +289,20 @@ use_retained_scheduling_info=1
 use_syslog=1
 use_true_regexp_matching=0
 ",
+    ) }
+
+    it { should contain_file('/etc/nagios/private/resource.cfg').with(
+      'owner'   => 'root',
+      'group'   => 'nagios',
+      'mode'    => '0640',
+      'content' => '##########
+##
+## STOP THIS FILE IS MANAGED BY PUPPET
+##
+##########
+
+$USER1$=/usr/lib64/nagios/plugins
+',
     ) }
   end
 end

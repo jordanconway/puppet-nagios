@@ -144,6 +144,20 @@
 #   Type: string
 #   Default: $::fqdn
 #
+# [*resource_macros*]
+#   An array listing the values for the $USER1$ style resource macros.
+#   The array order itself will determine which $USER<NUM>$ the macro
+#   receives.
+#
+#   Type: array
+#   Default: One array member setting $USER1$ = the nagios plugins path
+#
+#   RH x86_64 systems would end up as [ '/usr/lib64/nagios/plugins' ]
+#
+#   NOTE: The default params array is _not_ merged with a user supplied
+#   array, as such, if adding macros you should make sure that you set
+#   the plugins macro (normal default is for $USER1$)
+#
 # [*templatecontact*]
 #   The default template definition(s) for contacts. These are taken
 #   from the EPEL nagios installation.
@@ -198,6 +212,7 @@ class nagios::server::config (
   $localhostgroupdefaults,
   $nagios_cfg,
   $nagiostag,
+  $resource_macros,
   $templatecontact,
   $templatehost,
   $templateservice,
@@ -218,6 +233,7 @@ class nagios::server::config (
   validate_hash($localhostgroupdefaults)
   validate_hash($nagios_cfg)
   validate_string($nagiostag)
+  validate_array($resource_macros)
   validate_hash($templatecontact)
   validate_hash($templatehost)
   validate_hash($templateservice)
@@ -267,11 +283,23 @@ class nagios::server::config (
   # trying to get this up and running in use, we're going to just leave
   # that for now and the validate_hash done previously will have to do
   # currently.
+
   file { $conffile:
     owner   => 'root',
     group   => 'root',
     mode    => '0664',
     content => template('nagios/nagios.cfg.erb')
+  }
+
+  validate_absolute_path($nagios_cfg['resource_file'])
+  validate_string($nagios_cfg['nagios_group'])
+
+  # private macro resource file
+  file { $nagios_cfg['resource_file']:
+    owner   => 'root',
+    group   => $nagios_cfg['nagios_group'],
+    mode    => '0640',
+    content => template('nagios/private_resource.cfg.erb')
   }
 
   Anchor['nagios::server::config::begin'] ->

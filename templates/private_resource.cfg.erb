@@ -1,0 +1,11 @@
+##########
+##
+## STOP THIS FILE IS MANAGED BY PUPPET
+##
+##########
+
+<% macro_count = 1 -%>
+<% @resource_macros.each do |macro| -%>
+$USER<%= macro_count %>$=<%= macro %>
+<% macro_count += 1 -%>
+<% end -%>
