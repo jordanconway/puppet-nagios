@@ -1,0 +1,28 @@
+##########
+##
+## STOP THIS FILE IS MANAGED BY PUPPET
+##
+##########
+
+<% @nagios_cfg.sort.map do |var, val| -%>
+<% case var
+when 'cfg_file' -%>
+<% if val.is_a? Array -%>
+<% val.each do |cfg_file| -%>
+cfg_file=<%= cfg_file %>
+<% end -%>
+<% else -%>
+cfg_file=<%= val %>
+<% end -%>
+<% when 'cfg_dir' -%>
+<% if val.is_a? Array -%>
+<% val.each do |cfg_dir| -%>
+cfg_dir=<%= cfg_dir %>
+<% end -%>
+<% else -%>
+cfg_dir=<%= val %>
+<% end -%>
+<% else -%>
+<%= var %>=<%= val %>
+<% end -%>
+<% end -%>

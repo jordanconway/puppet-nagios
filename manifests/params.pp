@@ -38,6 +38,168 @@ class nagios::params {
     'RedHat' => 'nagios',
   }
 
+  $rootdir     = "/etc/${basename}"
+  # cfg_dir also uses $resourcedir
+  $resourcedir = "${rootdir}/conf.d"
+  $conffile    = "${rootdir}/nagios.cfg"
+
+  case $::osfamily {
+    'RedHat': {
+      $os_default_nagios_cfg = {
+        'check_host_freshness'       => 0,
+        'command_file'               => "/var/spool/${basename}/cmd/nagios.cmd",
+        'date_format'                => 'us',
+        'debug_verbosity'            => 1,
+        'host_check_timeout'         => 30,
+        'lock_file'                  => "/var/run/${basename}.pid",
+        'log_event_handlers'         => 1,
+        'log_external_commands'      => 1,
+        'log_host_retries'           => 1,
+        'log_notifications'          => 1,
+        'log_passive_checks'         => 1,
+        'log_service_retries'        => 1,
+        'obsess_over_hosts'          => 0,
+        'obsess_over_services'       => 0,
+        'ocsp_timeout'               => 5,
+        'p1_file'                    => '/usr/sbin/p1.pl',
+        'use_retained_program_state' => 1,
+      }
+    }
+    default: {
+      $os_default_nagios_cfg = {
+        'check_host_freshness'       => 1,
+        'command_file'               => "/var/run/${basename}/rw/nagios.cmd",
+        'date_format'                => 'iso8601',
+        'debug_verbosity'            => 0,
+        'host_check_timeout'         => 60,
+        'lock_file'                  => "/var/run/${basename}/${basename}.pid",
+        'log_event_handlers'         => 0,
+        'log_external_commands'      => 0,
+        'log_host_retries'           => 0,
+        'log_notifications'          => 0,
+        'log_passive_checks'         => 0,
+        'log_service_retries'        => 0,
+        'obsess_over_hosts'          => 1,
+        'obsess_over_services'       => 1,
+        'ocsp_timeout'               => 10,
+        'p1_file'                    => "/usr/lib/${basename}/p1.pl",
+        'use_retained_program_state' => 0,
+      }
+    }
+  }
+
+  $base_default_nagios_cfg = {
+    'accept_passive_host_checks'                  => 1,
+    'accept_passive_service_checks'               => 1,
+    'additional_freshness_latency'                => 15,
+    'admin_email'                                 => "root@${::fqdn}",
+    'admin_pager'                                 => 'pagenagios@localhost',
+    'auto_reschedule_checks'                      => 0,
+    'auto_rescheduling_interval'                  => 30,
+    'auto_rescheduling_window'                    => 180,
+    'bare_update_check'                           => 0,
+    'cached_host_check_horizon'                   => 15,
+    'cached_service_check_horizon'                => 15,
+    'cfg_dir'                                     => [ $resourcedir ],
+    'check_external_commands'                     => 1,
+    'check_for_orphaned_hosts'                    => 1,
+    'check_for_orphaned_services'                 => 1,
+    'check_for_updates'                           => 1,
+    # lint:ignore:80chars
+    'check_result_path'                           => "/var/lib/${basename}/spool/checkresults",
+    # lint:endignore
+    'check_result_reaper_frequency'               => 10,
+    'check_service_freshness'                     => 1,
+    'command_check_interval'                      => -1,
+    'daemon_dumps_core'                           => 0,
+    # lint:ignore:80chars
+    'debug_file'                                  => "/var/log/${basename}/nagios.debug",
+    # lint:endignore
+    'debug_level'                                 => 0,
+    'enable_embedded_perl'                        => 1,
+    'enable_environment_macros'                   => 1,
+    'enable_event_handlers'                       => 1,
+    'enable_flap_detection'                       => 1,
+    'enable_notifications'                        => 1,
+    'enable_predictive_host_dependency_checks'    => 1,
+    'enable_predictive_service_dependency_checks' => 1,
+    'event_broker_options'                        => -1,
+    'event_handler_timeout'                       => 30,
+    'execute_host_checks'                         => 1,
+    'execute_service_checks'                      => 1,
+    'external_command_buffer_slots'               => 4096,
+    'high_host_flap_threshold'                    => 20.0,
+    'high_service_flap_threshold'                 => 20.0,
+    'host_freshness_check_interval'               => 60,
+    'host_inter_check_delay_method'               => 's',
+    'illegal_object_name_chars'                   => "`~!$%^&*|'\"<>?,()=",
+    'illegal_macro_output_chars'                  => "`~$&|'\"<>",
+    'interval_length'                             => 60,
+    # lint:ignore:80chars
+    'log_archive_path'                            => "/var/log/${basename}/archives",
+    'log_file'                                    => "/var/log/${basename}/nagios.log",
+    # lint:endignore
+    'log_initial_states'                          => 0,
+    'log_rotation_method'                         => 'd',
+    'low_host_flap_threshold'                     => 5.0,
+    'low_service_flap_threshold'                  => 5.0,
+    'max_check_result_file_age'                   => 3600,
+    'max_check_result_reaper_time'                => 30,
+    'max_concurrent_checks'                       => 0,
+    'max_debug_file_size'                         => 1000000,
+    'max_host_check_spread'                       => 30,
+    'max_service_check_spread'                    => 30,
+    'nagios_group'                                => 'nagios',
+    'nagios_user'                                 => 'nagios',
+    'notification_timeout'                        => 30,
+    # lint:ignore:80chars
+    'object_cache_file'                           => "/var/cache/${basename}/objects.cache",
+    # lint:endignore
+    'passive_host_checks_are_soft'                => 0,
+    'perfdata_timeout'                            => 5,
+    # lint:ignore:80chars
+    'precached_object_file'                       => "/var/cache/${basename}/objects.precache",
+    'private_resource_file'                       => "/etc/${basename}/private/resource.cfg",
+    # lint:endignore
+    'process_performance_data'                    => 0,
+    'retain_state_information'                    => 1,
+    'retained_contact_host_attribute_mask'        => 0,
+    'retained_contact_service_attribute_mask'     => 0,
+    'retained_host_attribute_mask'                => 0,
+    'retained_process_host_attribute_mask'        => 0,
+    'retained_process_service_attribute_mask'     => 0,
+    'retained_service_attribute_mask'             => 0,
+    'retention_update_interval'                   => 60,
+    'service_check_timeout'                       => 60,
+    'service_check_timeout_state'                 => 'c',
+    'service_freshness_check_interval'            => 60,
+    'service_inter_check_delay_method'            => 's',
+    'service_interleave_factor'                   => 's',
+    'sleep_time'                                  => 0.25,
+    'soft_state_dependencies'                     => 0,
+    # lint:ignore:80chars
+    'state_retention_file'                        => "/var/lib/${basename}/retention.dat",
+    'status_file'                                 => "/var/cache/${basename}/status.dat",
+    # lint:endignore
+    'status_update_interval'                      => 10,
+    # lint:ignore:80chars
+    'temp_file'                                   => "/var/cache/${basename}/nagios.tmp",
+    # lint:endignore
+    'temp_path'                                   => '/tmp',
+    'translate_passive_host_checks'               => 0,
+    'use_aggressive_host_checking'                => 0,
+    'use_embedded_perl_implicitly'                => 1,
+    'use_large_installation_tweaks'               => 0,
+    'use_regexp_matching'                         => 0,
+    'use_retained_scheduling_info'                => 1,
+    'use_syslog'                                  => 1,
+    'use_true_regexp_matching'                    => 0,
+  }
+
+  # lint:ignore:80chars
+  $default_nagios_config = merge($base_default_nagios_cfg, $os_default_nagios_cfg)
+  # lint:endignore
+
   # base templates and commands
   $templatecontact = {
     'generic-contact'                   => {
@@ -378,10 +540,6 @@ class nagios::params {
       default  => '/usr/lib/nagios/plugins',
     },
   }
-
-  $rootdir     = "/etc/${basename}"
-  $resourcedir = "${rootdir}/objects"
-  $conffile    = "${rootdir}/nagios.cfg"
 
   # default list of plugins to install
   # only define nagios-plugins-all by default as that will pull in all

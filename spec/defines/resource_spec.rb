@@ -41,7 +41,7 @@ describe 'nagios::resource', :type => :define do
           /Unknown resource type passed of 'badvalue'/)
     end
 
-    it 'should have a propperly defined command resource' do
+    it 'should have a properly defined command resource' do
       params.merge!({ 'resourcedef' => {
         'command_line' => 'testcommand',
       }})
@@ -49,7 +49,7 @@ describe 'nagios::resource', :type => :define do
         'resourcedef'      => {
             'ensure'       => 'present',
             'command_line' => 'testcommand',
-            'target'       => '/etc/nagios/objects/command_test.example.com_test_me.cfg',
+            'target'       => '/etc/nagios/conf.d/command_test.example.com_test_me.cfg',
             'tag'          => 'nagios-foo',
         },
       )

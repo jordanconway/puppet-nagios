@@ -116,6 +116,21 @@
 #   Type: hash
 #   Default: {}
 #
+# [*nagios_cfg*]
+#   The configuration overrides for going into the default nagios config
+#   file (user non-settable).
+#
+#   This hash is merged with $nagios::params::default_nagios_config and
+#   the result is passed to Class['nagios::server::config']
+#
+#   The cfg_dir and cfg_file options take either a single string or an
+#   array. For the full list of options see the params file as well as
+#   the nagios documentation as params that are not defined in will not
+#   be written to file (some are validly not defined)
+#
+#   Type: hash
+#   Default: see description
+#
 # [*nagiostag*]
 #   The name / tag that this server uses to both export the resources
 #   for itself as well as to collect all the resources exported by
@@ -190,6 +205,7 @@ class nagios (
   $localcontactgroupdefaults = {},
   $localhostgroups           = {},
   $localhostgroupdefaults    = {},
+  $nagios_cfg                = {},
   $nagiostag                 = $::fqdn,
   $plugins                   = $nagios::params::plugins,
   $templatecontact           = $nagios::params::templatecontact,
@@ -209,6 +225,7 @@ class nagios (
   validate_hash($localcontactgroupdefaults)
   validate_hash($localhostgroups)
   validate_hash($localhostgroupdefaults)
+  validate_hash($nagios_cfg)
   validate_string($nagiostag)
   validate_array($plugins)
   validate_hash($templatecontact)
@@ -224,7 +241,10 @@ class nagios (
     plugins => $plugins,
   }
 
+  $_nagios_cfg = merge($nagios::params::default_nagios_config, $nagios_cfg)
+
   class { 'nagios::server::config':
+    conffile                  => $nagios::params::conffile,
     defaultcommands           => $defaultcommands,
     defaultcontacts           => $defaultcontacts,
     defaultcontactgroups      => $defaultcontactgroups,
@@ -237,6 +257,7 @@ class nagios (
     localcontactgroupdefaults => $localcontactgroupdefaults,
     localhostgroups           => $localhostgroups,
     localhostgroupdefaults    => $localhostgroupdefaults,
+    nagios_cfg                => $_nagios_cfg,
     nagiostag                 => $nagiostag,
     templatecontact           => $templatecontact,
     templatehost              => $templatehost,
