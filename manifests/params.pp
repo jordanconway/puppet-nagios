@@ -47,6 +47,9 @@ class nagios::params {
     'RedHat': {
       $os_default_nagios_cfg = {
         'check_host_freshness'       => 0,
+        # lint:ignore:80chars
+        'check_result_path'          => "/var/log/${basename}/spool/checkresults",
+        # lint:endignore
         'command_file'               => "/var/spool/${basename}/cmd/nagios.cmd",
         'date_format'                => 'us',
         'debug_verbosity'            => 1,
@@ -68,6 +71,9 @@ class nagios::params {
     default: {
       $os_default_nagios_cfg = {
         'check_host_freshness'       => 1,
+        # lint:ignore:80chars
+        'check_result_path'          => "/var/lib/${basename}/spool/checkresults",
+        # lint:endignore
         'command_file'               => "/var/run/${basename}/rw/nagios.cmd",
         'date_format'                => 'iso8601',
         'debug_verbosity'            => 0,
@@ -105,9 +111,6 @@ class nagios::params {
     'check_for_orphaned_hosts'                    => 1,
     'check_for_orphaned_services'                 => 1,
     'check_for_updates'                           => 1,
-    # lint:ignore:80chars
-    'check_result_path'                           => "/var/lib/${basename}/spool/checkresults",
-    # lint:endignore
     'check_result_reaper_frequency'               => 10,
     'check_service_freshness'                     => 1,
     'command_check_interval'                      => -1,

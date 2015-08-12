@@ -56,7 +56,7 @@ describe 'nagios::server::config' do
           'check_for_orphaned_hosts'                    => 1,
           'check_for_orphaned_services'                 => 1,
           'check_for_updates'                           => 1,
-          'check_result_path'                           => '/var/lib/nagios/spool/checkresults',
+          'check_result_path'                           => '/var/log/nagios/spool/checkresults',
           'check_result_reaper_frequency'               => 10,
           'check_service_freshness'                     => 1,
           'command_check_interval'                      => -1,
@@ -198,7 +198,7 @@ check_for_orphaned_hosts=1
 check_for_orphaned_services=1
 check_for_updates=1
 check_host_freshness=0
-check_result_path=/var/lib/nagios/spool/checkresults
+check_result_path=/var/log/nagios/spool/checkresults
 check_result_reaper_frequency=10
 check_service_freshness=1
 command_check_interval=-1
