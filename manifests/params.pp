@@ -35,7 +35,7 @@ class nagios::params {
 
   $basename = $::osfamily ? {
     'Debian' => 'nagios3',
-    'RedHat' => 'nagios',
+    default  => 'nagios',
   }
 
   $rootdir     = "/etc/${basename}"
