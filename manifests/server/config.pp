@@ -294,6 +294,14 @@ class nagios::server::config (
   validate_absolute_path($nagios_cfg['resource_file'])
   validate_string($nagios_cfg['nagios_group'])
 
+  # make sure that private macro resource directory exists
+  file { dirname($nagios_cfg['resource_file']):
+    ensure => 'directory',
+    owner  => 'root',
+    group  => $nagios_cfg['nagios_group'],
+    mode   => '0760',
+  }
+
   # private macro resource file
   file { $nagios_cfg['resource_file']:
     owner   => 'root',
