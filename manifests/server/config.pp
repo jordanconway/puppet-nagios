@@ -300,7 +300,7 @@ class nagios::server::config (
     ensure => 'directory',
     owner  => 'root',
     group  => $nagios_cfg['nagios_group'],
-    mode   => '0760',
+    mode   => '0750',
   }
 
   # private macro resource file
