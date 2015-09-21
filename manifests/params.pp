@@ -42,6 +42,7 @@ class nagios::params {
   # cfg_dir also uses $resourcedir
   $resourcedir = "${rootdir}/conf.d"
   $conffile    = "${rootdir}/nagios.cfg"
+  $cgiconffile = "${rootdir}/cgi.cfg"
 
   case $::osfamily {
     'RedHat': {
@@ -67,6 +68,10 @@ class nagios::params {
         'p1_file'                    => '/usr/sbin/p1.pl',
         'use_retained_program_state' => 1,
       }
+      $os_default_cgi_cfg = {
+        'physical_html_path' => '/usr/share/nagios/html',
+        'show_context_help'  => 0,
+      }
     }
     default: {
       $os_default_nagios_cfg = {
@@ -90,6 +95,13 @@ class nagios::params {
         'ocsp_timeout'               => 10,
         'p1_file'                    => "/usr/lib/${basename}/p1.pl",
         'use_retained_program_state' => 0,
+      }
+      $os_default_cgi_cfg = {
+        # lint:ignore:80chars
+        'nagios_check_command' => '/usr/lib/nagios/plugins/check_nagios /var/cache/nagios3/status.dat 5 \'/usr/sbin/nagios3\'',
+        # lint:endignore
+        'physical_html_path'   => '/usr/share/nagios3/htdocs',
+        'show_context_help'    => 1,
       }
     }
   }
@@ -201,9 +213,37 @@ class nagios::params {
     'use_true_regexp_matching'                    => 0,
   }
 
+  $base_default_cgi_cfg = {
+    'action_url_target'                        => '_blank',
+    'authorized_for_all_hosts'                 => 'nagiosadmin',
+    'authorized_for_all_host_commands'         => 'nagiosadmin',
+    'authorized_for_all_services'              => 'nagiosadmin',
+    'authorized_for_all_service_commands'      => 'nagiosadmin',
+    'authorized_for_configuration_information' => 'nagiosadmin',
+    'authorized_for_system_commands'           => 'nagiosadmin',
+    'authorized_for_system_information'        => 'nagiosadmin',
+    'default_statusmap_layout'                 => 5,
+    'default_statuswrl_layout'                 => 4,
+    'escape_html_tags'                         => 1,
+    'lock_author_names'                        => 1,
+    'main_config_file'                         => $conffile,
+    'notes_url_target'                         => '_blank',
+    # lint:ignore:80chars
+    'ping_syntax'                              => '/bin/ping -n -U -c 5 $HOSTADDRESS$',
+    # lint:endignore
+    'refresh_rate'                             => 90,
+    'result_limit'                             => 100,
+    'url_html_path'                            => "/${basename}",
+    'use_authentication'                       => 1,
+    'use_pending_states'                       => 1,
+    'use_ssl_authentication'                   => 0,
+  }
+
   # lint:ignore:80chars
   $default_nagios_config = merge($base_default_nagios_cfg, $os_default_nagios_cfg)
   # lint:endignore
+
+  $default_cgi_config = merge($base_default_cgi_cfg, $os_default_cgi_cfg)
 
   $user1 = $::osfamily ? {
     'Debian'   => '/usr/lib/nagios/plugins',

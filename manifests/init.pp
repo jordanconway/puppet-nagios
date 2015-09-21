@@ -220,6 +220,7 @@ class nagios (
   $localhostgroups           = {},
   $localhostgroupdefaults    = {},
   $nagios_cfg                = {},
+  $nagios_cgi_cfg            = {},
   $nagiostag                 = $::fqdn,
   $plugins                   = $nagios::params::plugins,
   $resource_macros           = $nagios::params::resource_macros,
@@ -241,6 +242,7 @@ class nagios (
   validate_hash($localhostgroups)
   validate_hash($localhostgroupdefaults)
   validate_hash($nagios_cfg)
+  validate_hash($nagios_cgi_cfg)
   validate_string($nagiostag)
   validate_array($plugins)
   validate_hash($templatecontact)
@@ -257,9 +259,11 @@ class nagios (
   }
 
   $_nagios_cfg = merge($nagios::params::default_nagios_config, $nagios_cfg)
+  $_nagios_cgi_cfg = merge($nagios::params::default_cgi_config, $nagios_cgi_cfg)
 
   class { 'nagios::server::config':
     conffile                  => $nagios::params::conffile,
+    cgiconffile               => $nagios::params::cgiconffile,
     defaultcommands           => $defaultcommands,
     defaultcontacts           => $defaultcontacts,
     defaultcontactgroups      => $defaultcontactgroups,
@@ -273,6 +277,7 @@ class nagios (
     localhostgroups           => $localhostgroups,
     localhostgroupdefaults    => $localhostgroupdefaults,
     nagios_cfg                => $_nagios_cfg,
+    nagios_cgi_cfg            => $_nagios_cgi_cfg,
     nagiostag                 => $nagiostag,
     resource_macros           => $resource_macros,
     templatecontact           => $templatecontact,
