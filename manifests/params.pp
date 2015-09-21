@@ -556,7 +556,8 @@ class nagios::params {
   # only define nagios-plugins-all by default as that will pull in all
   # nagios plugins. If the server should only have select plugins
   # installed they will need to be individually specified.
-  $plugins = [
-      'nagios-plugins-all'
-    ]
+  $plugins = $::osfamily ? {
+    'Debian' => ['nagios-plugins'],
+    default  => ['nagios-plugins-all'],
+  }
 }
