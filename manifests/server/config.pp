@@ -9,6 +9,11 @@
 #   effectively non-configurable as there is no direct method for a user
 #   to set this. See nagios::params for the default value
 #
+# [*cgiconffile*]
+#   The CGI configuration file for Nagios web interface. This is
+#   effectively non-configurable as there is no direct method for a user
+#   to set this. See nagios::params for the default value
+#
 # [*defaultcommands*]
 #   The default commands to be configured on the system. These are from
 #   the EPEL nagios installation and include 2 extra commands
@@ -136,6 +141,21 @@
 #   Type: hash
 #   Default: see description
 #
+# [*nagios_cgi_cfg*]
+#   The configuration that gets written into the $cgiconffile. This is a
+#   conglomerate hash that utilizes the merge of
+#   $nagios::params::base_default_cgi_cfg,
+#   $nagios::params::os_default_cgi_cfg and the user supplied hash
+#   that was passed to the Class['nagios']
+#
+#   The options that start from autorized_for_* take either a single string
+#   or an array. For the full list of options see the params file as well as
+#   the nagios documentation as params that are not defined in will not
+#   be written to file
+#
+#   Type: hash
+#   Default: see description
+#
 # [*nagiostag*]
 #   The name / tag that this server uses to both export the resources
 #   for itself as well as to collect all the resources exported by
@@ -198,6 +218,7 @@
 #
 class nagios::server::config (
   $conffile,
+  $cgiconffile,
   $defaultcommands,
   $defaultcontacts,
   $defaultcontactgroups,
@@ -211,6 +232,7 @@ class nagios::server::config (
   $localhostgroups,
   $localhostgroupdefaults,
   $nagios_cfg,
+  $nagios_cgi_cfg,
   $nagiostag,
   $resource_macros,
   $templatecontact,
@@ -219,6 +241,7 @@ class nagios::server::config (
   $templatetimeperiod,
 ) {
   validate_absolute_path($conffile)
+  validate_absolute_path($cgiconffile)
   validate_hash($defaultcommands)
   validate_hash($defaultcontacts)
   validate_hash($defaultcontactgroups)
@@ -232,6 +255,7 @@ class nagios::server::config (
   validate_hash($localhostgroups)
   validate_hash($localhostgroupdefaults)
   validate_hash($nagios_cfg)
+  validate_hash($nagios_cgi_cfg)
   validate_string($nagiostag)
   validate_array($resource_macros)
   validate_hash($templatecontact)
@@ -289,6 +313,13 @@ class nagios::server::config (
     group   => 'root',
     mode    => '0664',
     content => template('nagios/nagios.cfg.erb')
+  }
+
+  file { $cgiconffile:
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0664',
+    content => template('nagios/cgi.cfg.erb'),
   }
 
   validate_absolute_path($nagios_cfg['resource_file'])

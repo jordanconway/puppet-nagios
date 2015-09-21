@@ -1,0 +1,18 @@
+##########
+##
+## STOP THIS FILE IS MANAGED BY PUPPET
+##
+##########
+
+<% @nagios_cgi_cfg.sort.map do |var, val| -%>
+<% case var
+when /^authorized_for_*/ -%>
+<% if val.is_a? Array -%>
+<%= var %>=<%= val.join(',') %>
+<% else -%>
+<%= var %>=<%= val %>
+<% end -%>
+<% else -%>
+<%= var %>=<%= val %>
+<% end -%>
+<% end -%>

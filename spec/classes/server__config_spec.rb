@@ -26,6 +26,7 @@ describe 'nagios::server::config' do
     let(:params) {
       {
         'conffile'                  => '/etc/nagios/nagios.cfg',
+        'cgiconffile'               => '/etc/nagios/cgi.cfg',
         'defaultcommands'           => {},
         'defaultcontacts'           => {},
         'defaultcontactgroups'      => {},
@@ -148,6 +149,35 @@ describe 'nagios::server::config' do
           'ocsp_timeout'                                => 5,
           'p1_file'                                     => '/usr/sbin/p1.pl',
           'use_retained_program_state'                  => 1,
+        },
+        'nagios_cgi_cfg'            => {
+          # base defaults (assuming RedHat
+          'action_url_target'                        => '_blank',
+          'authorized_for_all_hosts'                 => ['nagiosadmin','testuser1','testuser2'],
+          'authorized_for_all_host_commands'         => ['nagiosadmin','testuser1','testuser2'],
+          'authorized_for_all_services'              => ['nagiosadmin','testuser1','testuser2'],
+          'authorized_for_all_service_commands'      => ['nagiosadmin','testuser1','testuser2'],
+          'authorized_for_configuration_information' => ['nagiosadmin','testuser1','testuser2'],
+          'authorized_for_system_commands'           => ['nagiosadmin','testuser1','testuser2'],
+          'authorized_for_system_information'        => ['nagiosadmin','testuser1','testuser2'],
+          'default_statusmap_layout'                 => 5,
+          'default_statuswrl_layout'                 => 4,
+          'escape_html_tags'                         => 1,
+          'lock_author_names'                        => 1,
+          'main_config_file'                         => '/etc/nagios/nagios.cfg',
+          'notes_url_target'                         => '_blank',
+          # lint:ignore:80chars
+          'ping_syntax'                              => '/bin/ping -n -U -c 5 $HOSTADDRESS$',
+          # lint:endignore
+          'refresh_rate'                             => 90,
+          'result_limit'                             => 100,
+          'url_html_path'                            => '/nagios',
+          'use_authentication'                       => 1,
+          'use_pending_states'                       => 1,
+          'use_ssl_authentication'                   => 0,
+          # os specific defaults (assuming RedHat)
+          'physical_html_path'                       => '/usr/share/nagios/html',
+          'show_context_help'                        => 0,
         },
         'nagiostag'                 => '',
         'resource_macros'           => [ '/usr/lib64/nagios/plugins' ],
@@ -288,6 +318,41 @@ use_retained_program_state=1
 use_retained_scheduling_info=1
 use_syslog=1
 use_true_regexp_matching=0
+",
+    ) }
+    it { should contain_file('/etc/nagios/cgi.cfg').with(
+      'owner'   => 'root',
+      'group'   => 'root',
+      'mode'    => '0664',
+      'content' => "##########
+##
+## STOP THIS FILE IS MANAGED BY PUPPET
+##
+##########
+
+action_url_target=_blank
+authorized_for_all_host_commands=nagiosadmin,testuser1,testuser2
+authorized_for_all_hosts=nagiosadmin,testuser1,testuser2
+authorized_for_all_service_commands=nagiosadmin,testuser1,testuser2
+authorized_for_all_services=nagiosadmin,testuser1,testuser2
+authorized_for_configuration_information=nagiosadmin,testuser1,testuser2
+authorized_for_system_commands=nagiosadmin,testuser1,testuser2
+authorized_for_system_information=nagiosadmin,testuser1,testuser2
+default_statusmap_layout=5
+default_statuswrl_layout=4
+escape_html_tags=1
+lock_author_names=1
+main_config_file=/etc/nagios/nagios.cfg
+notes_url_target=_blank
+physical_html_path=/usr/share/nagios/html
+ping_syntax=/bin/ping -n -U -c 5 $HOSTADDRESS$
+refresh_rate=90
+result_limit=100
+show_context_help=0
+url_html_path=/nagios
+use_authentication=1
+use_pending_states=1
+use_ssl_authentication=0
 ",
     ) }
 
