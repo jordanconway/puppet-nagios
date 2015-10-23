@@ -192,7 +192,7 @@ class nagios::client (
 
   # We always export a host configuration
   nagios::resource { $::fqdn:
-    type               => 'host',
+    resource_type      => 'host',
     defaultresourcedef => $defaulthostconfig,
     nagiostag          => $nagiostag,
     resourcedef        => $hostconfig,
@@ -200,49 +200,49 @@ class nagios::client (
 
   # create any base services
   create_resources('nagios::resource', $baseservices, {
-    'type'             => 'service',
+    'resource_type'    => 'service',
     defaultresourcedef => $defaultserviceconfig,
     nagiostag          => $nagiostag,
   })
 
   # create any host dependencies
   create_resources('nagios::resource', $hostdependencies, {
-    'type'             => 'hostdependency',
+    'resource_type'    => 'hostdependency',
     defaultresourcedef => $defaulthostdependencies,
     nagiostag          => $nagiostag,
   })
 
   # create any hostextinfo
   create_resources('nagios::resource', $hostextinfo, {
-    'type'             => 'hostextinfo',
+    'resource_type'    => 'hostextinfo',
     defaultresourcedef => $defaulthostextinfo,
     nagiostag          => $nagiostag,
   })
 
   # create host specific services
   create_resources('nagios::resource', $hostservices, {
-    'type'             => 'service',
+    'resource_type'    => 'service',
     defaultresourcedef => $defaultserviceconfig,
     nagiostag          => $nagiostag,
   })
 
   # create service dependencies
   create_resources('nagios::resource', $hostservicedependencies, {
-    'type'             => 'servicedependency',
+    'resource_type'    => 'servicedependency',
     defaultresourcedef => $defaultservicedependencies,
     nagiostag          => $nagiostag,
   })
 
   # create service escalations
   create_resources('nagios::resource', $hostserviceescalation, {
-    'type'             => 'serviceescalation',
+    'resource_type'    => 'serviceescalation',
     defaultresourcedef => $defaultserviceescalation,
     nagiostag          => $nagiostag,
   })
 
   # create service extinfo
   create_resources('nagios::resource', $hostserviceextinfo, {
-    'type'             => 'serviceextinfo',
+    'resource_type'    => 'serviceextinfo',
     defaultresourcedef => $defaultserviceextinfo,
     nagiostag          => $nagiostag,
   })

@@ -1,7 +1,7 @@
 # == Define: nagios::resource
 #
 # Defines a nagios::resource and calls the appropriate
-# nagios::resource::${type} to configure it
+# nagios::resource::${resource_type} to configure it
 #
 # === Parameters
 #
@@ -40,7 +40,7 @@
 #
 # === Variables
 #
-# [*type*]
+# [*resource_type*]
 #   What type of resource is being created
 #   Type: string
 #   This is required
@@ -58,7 +58,7 @@
 # Copyright 2015 Andrew J Grimberg
 #
 define nagios::resource (
-  $type,
+  $resource_type,
   $defaultresourcedef = {},
   $nagiostag          = '',
   $resourcedef        = {},
@@ -73,7 +73,9 @@ define nagios::resource (
 
   # determine what our target filename should be
   $name_down = downcase(regsubst($name, '\s+', '_'))
-  $target = "${nagios::params::resourcedir}/${type}_${::fqdn}_${name_down}.cfg"
+  # lint:ignore:80chars
+  $target = "${nagios::params::resourcedir}/${resource_type}_${::fqdn}_${name_down}.cfg"
+  # lint:endignore
 
   $_nagiostag = $nagiostag ? {
     ''      => undef,
@@ -96,7 +98,7 @@ define nagios::resource (
 
   $_resourcedef = merge($defaultresourcedef, $resourcedef, $mergedef)
 
-  case $type {
+  case $resource_type {
     command: {
       nagios::resource::command { $name:
         resourcedef => $_resourcedef,
@@ -170,7 +172,7 @@ define nagios::resource (
     default: {
       # normally we would do a validate_re but for some reason the regex
       # doesn't want to work correctly
-      fail("Unknown resource type passed of '${type}'")
+      fail("Unknown resource type passed of '${resource_type}'")
     }
   }
 }
