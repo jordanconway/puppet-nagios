@@ -27,7 +27,7 @@ describe 'nagios::resource', :type => :define do
   context 'with good params' do
     let(:params) {
       {
-        'type'           => 'command',
+        'resource_type' => 'command',
         'nagiostag'   => 'nagios-foo',
       }
     }
@@ -35,7 +35,7 @@ describe 'nagios::resource', :type => :define do
     it { should compile }
 
     it 'should fail on bad type' do
-      params.merge!({'type' => 'badvalue'})
+      params.merge!({'resource_type' => 'badvalue'})
       expect { should compile }.to \
         raise_error(RSpec::Expectations::ExpectationNotMetError,
           /Unknown resource type passed of 'badvalue'/)
@@ -55,68 +55,68 @@ describe 'nagios::resource', :type => :define do
       )
     end
 
-    it 'should have contact define when type => contact' do
-      params.merge!({ 'type' => 'contact' })
+    it 'should have contact define when resource_type => contact' do
+      params.merge!({ 'resource_type' => 'contact' })
       should contain_nagios__resource__contact('Test me')
     end
 
-    it 'should have contactgroup define when type => contactgroup' do
-      params.merge!({ 'type' => 'contactgroup' })
+    it 'should have contactgroup define when resource_type => contactgroup' do
+      params.merge!({ 'resource_type' => 'contactgroup' })
       should contain_nagios__resource__contactgroup('Test me')
     end
 
     it 'should have host define when type => host' do
-      params.merge!({ 'type' => 'host' })
+      params.merge!({ 'resource_type' => 'host' })
       should contain_nagios__resource__host('Test me')
     end
 
-    it 'should have hostdependency define when type => hostdependency' do
-      params.merge!({ 'type' => 'hostdependency' })
+    it 'should have hostdependency define when resource_type => hostdependency' do
+      params.merge!({ 'resource_type' => 'hostdependency' })
       should contain_nagios__resource__hostdependency('Test me')
     end
 
-    it 'should have hostescalation define when type => hostescalation' do
-      params.merge!({ 'type' => 'hostescalation' })
+    it 'should have hostescalation define when resource_type => hostescalation' do
+      params.merge!({ 'resource_type' => 'hostescalation' })
       should contain_nagios__resource__hostescalation('Test me')
     end
 
-    it 'should have hostextinfo define when type => hostextinfo' do
-      params.merge!({ 'type' => 'hostextinfo'})
+    it 'should have hostextinfo define when resource_type => hostextinfo' do
+      params.merge!({ 'resource_type' => 'hostextinfo'})
       should contain_nagios__resource__hostextinfo('Test me')
     end
 
-    it 'should have hostgroup define when type => hostgroup' do
-      params.merge!({ 'type' => 'hostgroup'})
+    it 'should have hostgroup define when resource_type => hostgroup' do
+      params.merge!({ 'resource_type' => 'hostgroup'})
       should contain_nagios__resource__hostgroup('Test me')
     end
 
-    it 'should have service define when type => service' do
-      params.merge!({ 'type' => 'service'})
+    it 'should have service define when resource_type => service' do
+      params.merge!({ 'resource_type' => 'service'})
       should contain_nagios__resource__service('Test me')
     end
 
-    it 'should have servicedependency define when type => servicedependency' do
-      params.merge!({ 'type' => 'servicedependency'})
+    it 'should have servicedependency define when resource_type => servicedependency' do
+      params.merge!({ 'resource_type' => 'servicedependency'})
       should contain_nagios__resource__servicedependency('Test me')
     end
 
-    it 'should have serviceescalation define when type => serviceescalation' do
-      params.merge!({ 'type' => 'serviceescalation'})
+    it 'should have serviceescalation define when resource_type => serviceescalation' do
+      params.merge!({ 'resource_type' => 'serviceescalation'})
       should contain_nagios__resource__serviceescalation('Test me')
     end
 
-    it 'should have serviceextinfo define when type => serviceextinfo' do
-      params.merge!({ 'type' => 'serviceextinfo'})
+    it 'should have serviceextinfo define when resource_type => serviceextinfo' do
+      params.merge!({ 'resource_type' => 'serviceextinfo'})
       should contain_nagios__resource__serviceextinfo('Test me')
     end
 
-    it 'should have servicegroup define when type => servicegroup' do
-      params.merge!({ 'type' => 'servicegroup'})
+    it 'should have servicegroup define when resource_type => servicegroup' do
+      params.merge!({ 'resource_type' => 'servicegroup'})
       should contain_nagios__resource__servicegroup('Test me')
     end
 
-    it 'should have timeperiod define when type => timeperiod' do
-      params.merge!({ 'type' => 'timeperiod'})
+    it 'should have timeperiod define when resource_type => timeperiod' do
+      params.merge!({ 'resource_type' => 'timeperiod'})
       should contain_nagios__resource__timeperiod('Test me')
     end
 

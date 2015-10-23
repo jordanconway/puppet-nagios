@@ -13,7 +13,7 @@ describe 'nagios::client', :type => :class do
   context 'with defaults for all parameters' do
     it { should contain_class('nagios::client') }
     it { should contain_nagios__resource('test.example.com').with(
-      'type'                 => 'host',
+      'resource_type'                 => 'host',
       'nagiostag'            => '',
       'defaultresourcedef'   => {
         'address'            => '192.168.0.1',
@@ -97,7 +97,7 @@ describe 'nagios::client', :type => :class do
     }
 
     it { should contain_nagios__resource('testservice-test.example.com').with(
-      'type'                  => 'service',
+      'resource_type'          => 'service',
       'nagiostag'             => '',
       'defaultresourcedef'    => {
         'check_interval'      => '5',
@@ -114,7 +114,7 @@ describe 'nagios::client', :type => :class do
     ) }
 
     it { should contain_nagios__resource('dep-test.example.com').with(
-      'type'                  => 'hostdependency',
+      'resource_type'          => 'hostdependency',
       'defaultresourcedef'    => {
         'host_name'           => 'hostdeptest'
       },
@@ -124,7 +124,7 @@ describe 'nagios::client', :type => :class do
     ) }
 
     it { should contain_nagios__resource('ext-test.example.com').with(
-      'type'                => 'hostextinfo',
+      'resource_type'       => 'hostextinfo',
       'defaultresourcedef'  => {
         'host_name'         => 'test.example.com',
       },
@@ -134,7 +134,7 @@ describe 'nagios::client', :type => :class do
     ) }
 
     it { should contain_nagios__resource('testservice2-test.example.com').with(
-      'type'                  => 'service',
+      'resource_type'         => 'service',
       'defaultresourcedef'    => {
         'check_interval'      => '5',
         'ensure'              => 'present',
@@ -150,7 +150,7 @@ describe 'nagios::client', :type => :class do
     ) }
 
     it { should contain_nagios__resource('servicedep1-test.example.com').with(
-      'type'                  => 'servicedependency',
+      'resource_type'         => 'servicedependency',
       'defaultresourcedef'    => {
         'host_name'           => 'test.example.com',
       },
@@ -160,7 +160,7 @@ describe 'nagios::client', :type => :class do
     ) }
 
     it { should contain_nagios__resource('escalation1-test.example.com').with(
-      'type'               => 'serviceescalation',
+      'resource_type'      => 'serviceescalation',
       'defaultresourcedef' => {
         'host_name'        => 'test.example.com',
       },
@@ -170,7 +170,7 @@ describe 'nagios::client', :type => :class do
     ) }
 
     it { should contain_nagios__resource('extinfo1-test.example.com').with(
-      'type'                  => 'serviceextinfo',
+      'resource_type'         => 'serviceextinfo',
       'defaultresourcedef'    => {
         'host_name'           => 'test.example.com',
       },

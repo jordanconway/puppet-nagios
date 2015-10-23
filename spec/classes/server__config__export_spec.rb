@@ -104,66 +104,66 @@ describe 'nagios::server::config::export' do
     it { should contain_class('nagios::server::config::export') }
 
     it { should contain_nagios__resource('defaultcommand').with(
-      'type'               => 'command',
+      'resource_type'      => 'command',
       'nagiostag'          => 'test',
       'defaultresourcedef' => {},
       'resourcedef'        => {},
     ) }
 
     it { should contain_nagios__resource('defaultcontact').with(
-      'type' => 'contact',
+      'resource_type' => 'contact',
     ) }
 
     it { should contain_nagios__resource('defaultcontactgroup').with(
-      'type' => 'contactgroup',
+      'resource_type' => 'contactgroup',
     ) }
 
     it { should contain_nagios__resource('defaulthostgroup').with(
-      'type' => 'hostgroup',
+      'resource_type' => 'hostgroup',
     ) }
 
     it { should contain_nagios__resource('localcommand').with(
-      'type'               => 'command',
+      'resource_type'      => 'command',
       'defaultresourcedef' => {
         'use'              => 'defaultcommand',
       },
     ) }
 
     it { should contain_nagios__resource('localcontact').with(
-      'type'               => 'contact',
+      'resource_type'      => 'contact',
       'defaultresourcedef' => {
         'use'              => 'defaultcontact',
       },
     ) }
 
     it { should contain_nagios__resource('localcontactgroup').with(
-      'type'               => 'contactgroup',
+      'resource_type'      => 'contactgroup',
       'defaultresourcedef' => {
         'use'              => 'defaultcontactgroup',
       },
     ) }
 
     it { should contain_nagios__resource('localhostgroup').with(
-      'type'               => 'hostgroup',
+      'resource_type'      => 'hostgroup',
       'defaultresourcedef' => {
         'use'              => 'defaulthostgroup',
       },
     ) }
 
     it { should contain_nagios__resource('templatecontact').with(
-      'type' => 'contact',
+      'resource_type' => 'contact',
     ) }
 
     it { should contain_nagios__resource('templatehost').with(
-      'type' => 'host',
+      'resource_type' => 'host',
     ) }
 
     it { should contain_nagios__resource('templateservice').with(
-      'type' => 'service',
+      'resource_type' => 'service',
     ) }
 
     it { should contain_nagios__resource('templatetimeperiod').with(
-      'type' => 'timeperiod',
+      'resource_type' => 'timeperiod',
     ) }
   end
 
