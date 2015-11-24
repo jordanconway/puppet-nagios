@@ -67,6 +67,8 @@ class nagios::params {
         'ocsp_timeout'               => 5,
         'p1_file'                    => '/usr/sbin/p1.pl',
         'use_retained_program_state' => 1,
+        'object_cache_file'          => "/var/log/${basename}/objects.cache",
+        'precached_object_file'      => "/var/log/${basename}/objects.precache",
       }
       $os_default_cgi_cfg = {
         'physical_html_path' => '/usr/share/nagios/html',
