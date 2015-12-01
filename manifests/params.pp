@@ -71,6 +71,7 @@ class nagios::params {
         'precached_object_file'      => "/var/log/${basename}/objects.precache",
         'temp_file'                  => "/var/log/${basename}/nagios.tmp",
         'status_file'                => "/var/log/${basename}/status.dat",
+        'state_retention_file'       => "/var/log/${basename}/retention.dat",
       }
       $os_default_cgi_cfg = {
         'physical_html_path' => '/usr/share/nagios/html',
