@@ -44,7 +44,7 @@ class nagios::server::install (
   # Build new service unit
   file { '/usr/lib/systemd/system/nagios.service':
     ensure  => present,
-    user    => 'root',
+    owner   => 'root',
     group   => 'root',
     content => template('nagios/nagios.service.erb'),
     mode    => '0644',
