@@ -33,7 +33,7 @@ class nagios::server::install (
 ) {
   validate_array($plugins)
   validate_hash($nagios_cfg)
-  validate_path($conffile)
+  validate_absolute_path($conffile)
 
   # We need some variables out of nagios::params
   include nagios::params
