@@ -33,6 +33,30 @@ describe 'nagios::server::install' do
     it { should contain_class('nagios::server::install') }
     it { should contain_package('nagios') }
     it { should contain_package('nagios-plugins-all') }
+    it { should contain_file('/usr/lib/systemd/system/nagios.service').with(
+      'owner'   => 'root',
+      'group'   => 'root',
+      'mode'    => '0644',
+      'content' => '[Unit]
+Description=Nagios Network Monitoring
+After=network.target
+Documentation=https://www.nagios.org/documentation/
+
+[Service]
+Type=forking
+User=nagios
+Group=nagios
+PIDFile=/var/run/nagios/nagios.pid
+# Verify Nagios config before start as upstream suggested
+ExecStartPre=/usr/sbin/nagios -v /etc/nagios/nagios.cfg
+ExecStart=/usr/sbin/nagios -d /etc/nagios/nagios.cfg
+ExecStopPost=/usr/bin/rm -f /var/spool/nagios/cmd/nagios.cmd
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
+',
+    ) }
   end
 end
 
