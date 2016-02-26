@@ -28,8 +28,12 @@
 #
 class nagios::server::install (
   $plugins,
+  $nagios_cfg,
+  $conffile
 ) {
   validate_array($plugins)
+  validate_hash($nagios_cfg)
+  validate_absolute_path($conffile)
 
   # We need some variables out of nagios::params
   include nagios::params
@@ -37,6 +41,23 @@ class nagios::server::install (
   # Install nagios
   package { $nagios::params::basename:
     ensure => present,
+  }
+
+  # Build new service unit
+  file { '/usr/lib/systemd/system/nagios.service':
+    ensure  => present,
+    owner   => 'root',
+    group   => 'root',
+    content => template('nagios/nagios.service.erb'),
+    mode    => '0644',
+  } ~>
+  Exec['systemctl-daemon-reload-nagios']
+
+  # Refresh systemd with new service unit
+  exec { 'systemctl-daemon-reload-nagios':
+    command     => '/bin/systemctl daemon-reload',
+    path        => $::path,
+    refreshonly => true,
   }
 
   # Install selected plugins

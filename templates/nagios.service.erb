@@ -1,0 +1,18 @@
+[Unit]
+Description=Nagios Network Monitoring
+After=network.target
+Documentation=https://www.nagios.org/documentation/
+
+[Service]
+Type=forking
+User=<%= @nagios_cfg['nagios_user'] %>
+Group=<%= @nagios_cfg['nagios_group'] %>
+PIDFile=<%= @nagios_cfg['lock_file'] %>
+# Verify Nagios config before start as upstream suggested
+ExecStartPre=/usr/sbin/nagios -v <%= @conffile %>
+ExecStart=/usr/sbin/nagios -d <%= @conffile %>
+ExecStopPost=/usr/bin/rm -f <%= @nagios_cfg['command_file'] %>
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
