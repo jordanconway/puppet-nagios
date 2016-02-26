@@ -39,6 +39,23 @@ class nagios::server::install (
     ensure => present,
   }
 
+  # Build new service unit
+  file { '/usr/lib/systemd/system/nagios.service':
+    ensure  => present,
+    user    => 'root',
+    group   => 'root',
+    content => template('nagios/nagios.service.erb'),
+    mode    => '0644',
+  } ~>
+  Exec['systemctl-daemon-reload-nagios']
+
+  # Refresh systemd with new service unit
+  exec { 'systemctl-daemon-reload-nagios':
+    command     => '/bin/systemctl daemon-reload',
+    path        => $::path,
+    refreshonly => true,
+  }
+
   # Install selected plugins
   package { $plugins:
     ensure => present,
