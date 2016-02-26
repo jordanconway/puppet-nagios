@@ -28,8 +28,10 @@
 #
 class nagios::server::install (
   $plugins,
+  $nagios_cfg
 ) {
   validate_array($plugins)
+  validate_hash($nagios_cfg)
 
   # We need some variables out of nagios::params
   include nagios::params
