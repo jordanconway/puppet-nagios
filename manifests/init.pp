@@ -257,6 +257,7 @@ class nagios (
   class { 'nagios::server::install':
     plugins    => $plugins,
     nagios_cfg => $nagios_cfg,
+    conffile   => $conffile,
   }
 
   $_nagios_cfg = merge($nagios::params::default_nagios_config, $nagios_cfg)

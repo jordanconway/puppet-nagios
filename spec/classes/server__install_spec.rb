@@ -28,6 +28,7 @@ describe 'nagios::server::install' do
         'plugins'    => [
           'nagios-plugins-all'
         ],
+        'conffile'   => '/etc/nagios/nagios.cfg',
         'nagios_cfg' => {
           # base defaults (assuming RedHat)
           'accept_passive_host_checks'                  => 1,
@@ -126,7 +127,7 @@ describe 'nagios::server::install' do
           'date_format'                                 => 'us',
           'debug_verbosity'                             => 1,
           'host_check_timeout'                          => 30,
-          'lock_file'                                   => '/var/run/nagios.pid',
+          'lock_file'                                   => '/var/run/nagios/nagios.pid',
           'log_event_handlers'                          => 1,
           'log_external_commands'                       => 1,
           'log_host_retries'                            => 1,

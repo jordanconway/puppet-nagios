@@ -137,7 +137,7 @@ describe 'nagios::server::config' do
           'date_format'                                 => 'us',
           'debug_verbosity'                             => 1,
           'host_check_timeout'                          => 30,
-          'lock_file'                                   => '/var/run/nagios.pid',
+          'lock_file'                                   => '/var/run/nagios/nagios.pid',
           'log_event_handlers'                          => 1,
           'log_external_commands'                       => 1,
           'log_host_retries'                            => 1,
@@ -259,7 +259,7 @@ host_inter_check_delay_method=s
 illegal_macro_output_chars=`~$&|'\"<>
 illegal_object_name_chars=`~!$%^&*|'\"<>?,()=
 interval_length=60
-lock_file=/var/run/nagios.pid
+lock_file=/var/run/nagios/nagios.pid
 log_archive_path=/var/log/nagios/archives
 log_event_handlers=1
 log_external_commands=1
