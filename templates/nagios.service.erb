@@ -10,7 +10,7 @@ Group=<%= @nagios_cfg['nagios_group'] %>
 PIDFile=<%= @nagios_cfg['lock_file'] %>
 # Verify Nagios config before start as upstream suggested
 ExecStartPre=/usr/sbin/nagios -v <%= @conffile %>
-ExecStart=/usr/sbin/nagios -d  <%= @conffile %>
+ExecStart=/usr/sbin/nagios -d <%= @conffile %>
 ExecStopPost=/usr/bin/rm -f <%= @nagios_cfg['command_file'] %>
 ExecReload=/bin/kill -HUP $MAINPID
 
