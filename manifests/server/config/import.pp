@@ -37,5 +37,7 @@ class nagios::server::config::import (
   # specific File resources are exported for each of the nagios_*
   # resources to get around issues with how file targets don't make the
   # files managed from the point of view of purge.
-  File <<| tag == $nagiostag |>> { }
+  File <<| tag == $nagiostag |>> {
+    notify => Class[ 'nagios::server::service' ]
+  }
 }
