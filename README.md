@@ -180,10 +180,13 @@ supports.
 
 For more complex setup scenarios see the following repositories:
 
-[Tykeal's Testing Hiera](https://github.com/tykeal/puppetserver-hiera)
-[Tykeal's Master repo](https://github.com/tykeal/puppetserver-main)
-[Tykeal's Testing Profiles](https://github.com/tykeal/puppetserver-mod-profile)
-[Tykeal's Testing Roles](https://github.com/tykeal/puppetserver-mod-role)
+* [Tykeal's Testing Hiera](https://github.com/tykeal/puppetserver-hiera)
+
+* [Tykeal's Master repo](https://github.com/tykeal/puppetserver-main)
+
+* [Tykeal's Testing Profiles](https://github.com/tykeal/puppetserver-mod-profile)
+
+* [Tykeal's Testing Roles](https://github.com/tykeal/puppetserver-mod-role)
 
 **NOTE** the above repostories are actively for my testing of various new
 modules and profiles.
