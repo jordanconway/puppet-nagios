@@ -1,3 +1,4 @@
+# class nagios::params
 class nagios::params {
   $defaulthostconfig     = {
     'address'            => $::ipaddress,
@@ -252,7 +253,7 @@ class nagios::params {
 
   $user1 = $::osfamily ? {
     'Debian'   => '/usr/lib/nagios/plugins',
-    'RedHat'   => $::architecture ? {
+    'RedHat'   => $::hardwaremodel ? {
       'x86_64' => '/usr/lib64/nagios/plugins',
       default  => '/usr/lib/nagios/plugins',
     },
@@ -436,6 +437,7 @@ class nagios::params {
   # plus the addition of notify-{host,service}-by-epager
   # disable 80chars linting for this block as the lines just need to be long :(
   # lint:ignore:80chars
+  # lint:ignore:140chars
   $defaultcommands = {
     'notify-host-by-email' => {
       'resourcedef'        => {
@@ -568,6 +570,7 @@ class nagios::params {
       },
     },
   }
+  # lint:endignore
   # lint:endignore
 
   $defaultcontacts = {

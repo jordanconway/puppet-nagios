@@ -1,14 +1,13 @@
 require 'spec_helper'
 describe 'nagios::params' do
-  # Force our osfamily so that our params class doesn't croak
-  let(:facts) {
-    {
-      :osfamily => 'RedHat'
-    }
-  }
+  on_supported_os.each do |os, facts|
+    let(:facts) do
+      facts
+    end
 
-  context 'with defaults for all parameters' do
-    it { should contain_class('nagios::params') }
+    context "on #{os} with defaults for all parameters" do
+      it { should contain_class('nagios::params') }
+    end
   end
 end
 
