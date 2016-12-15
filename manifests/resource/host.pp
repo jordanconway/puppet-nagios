@@ -6,9 +6,7 @@
 #
 # [*resourcedef*]
 #   The resource configuration for a nagios_host call. This will be
-#   attached to the resource $name (which should be the $::fqdn) in a
-#   create_resources configuration and then create_resources will build
-#   an @@nagios_host object
+#   used in the creation of the exported nagios_host object
 #   Type: hash
 #
 # === Authors
@@ -24,6 +22,7 @@ define nagios::resource::host (
 ) {
   validate_hash($resourcedef)
 
-  $_myresources = hash([$name, $resourcedef])
-  create_resources('@@nagios_host', $_myresources)
+  @@nagios_host { $name:
+    * => $resourcedef,
+  }
 }

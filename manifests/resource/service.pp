@@ -6,8 +6,7 @@
 #
 # [*resourcedef*]
 #   The resource configuration for the nagios_service call. This will be
-#   attached to the resource $name in a create_resources configuration
-#   and then create_resources will build a @@nagios_service object
+#   used in the creation of the exported nagios_service object
 #   Type: hash
 #
 # === Authors
@@ -31,6 +30,7 @@ define nagios::resource::service (
 
   $_mergedef = merge($resourcemerge, $resourcedef)
 
-  $_myresources = hash([$name, $_mergedef])
-  create_resources('@@nagios_service', $_myresources)
+  @@nagios_service { $name:
+    * => $_mergedef,
+  }
 }

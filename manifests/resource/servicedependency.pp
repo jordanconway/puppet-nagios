@@ -6,9 +6,8 @@
 #
 # [*resourcedef*]
 #   The resource configuration for the nagios_servicedependency call.
-#   This will be attached to the resource $name in a create_resources
-#   configuration and then create_resources will build a
-#   @@nagios_servicedependency object
+#   This will be used in the creation of the exported
+#   nagios_servicedependency object.
 #   Type: hash
 #
 # === Authors
@@ -24,6 +23,7 @@ define nagios::resource::servicedependency (
 ) {
   validate_hash($resourcedef)
 
-  $_myresources = hash([$name, $resourcedef])
-  create_resources('@@nagios_servicedependency', $_myresources)
+  @@nagios_servicedependency { $name:
+    * => $resourcedef,
+  }
 }

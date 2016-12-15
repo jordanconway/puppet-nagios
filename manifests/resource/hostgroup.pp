@@ -6,8 +6,7 @@
 #
 # [*resourcedef*]
 #   The resource configuration for the nagios_hostgroup call. This will be
-#   attached to the resource $name in a create_resources configuration
-#   and then create_resources will build a @@nagios_hostgroup object
+#   used in the creation of the exported nagios_hostgroup object
 #   Type: hash
 #
 # === Authors
@@ -23,6 +22,7 @@ define nagios::resource::hostgroup (
 ) {
   validate_hash($resourcedef)
 
-  $_myresources = hash([$name, $resourcedef])
-  create_resources('@@nagios_hostgroup', $_myresources)
+  @@nagios_hostgroup { $name:
+    * => $resourcedef,
+  }
 }

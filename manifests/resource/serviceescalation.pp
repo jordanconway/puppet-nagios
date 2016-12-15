@@ -6,8 +6,7 @@
 #
 # [*resourcedef*]
 #   The resource configuration for the nagios_serviceescalation call.
-#   This will be attached to the resource $name in a create_resources
-#   configuration and then create_resources will build a
+#   This will be used in the creation of the exported
 #   @@nagios_serviceescalation object
 #   Type: hash
 #
@@ -32,6 +31,7 @@ define nagios::resource::serviceescalation (
 
   $_mergedef = merge($resourcemerge, $resourcedef)
 
-  $_myresources = hash([$name, $_mergedef])
-  create_resources('@@nagios_serviceescalation', $_myresources)
+  @@nagios_serviceescalation { $name:
+    * => $_mergedef,
+  }
 }

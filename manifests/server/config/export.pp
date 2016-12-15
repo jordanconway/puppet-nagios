@@ -53,78 +53,103 @@ class nagios::server::config::export (
   # We need some variables out of nagios::params
   include nagios::params
 
+  $defoptions = {
+    defaultresourcedef => {},
+    nagiostag          => $nagiostag,
+  }
+
   # build out needed templates
-  create_resources('nagios::resource', $templatecontact, {
-    'resource_type'    => 'contact',
-    defaultresourcedef => {},
-    nagiostag          => $nagiostag,
-  })
+  $templatecontact.each |$resource, $options| {
+    nagios::resource { $resource:
+      resource_type => 'contact',
+      *             => $defoptions + $options,
+    }
+  }
 
-  create_resources('nagios::resource', $templatehost, {
-    'resource_type'    => 'host',
-    defaultresourcedef => {},
-    nagiostag          => $nagiostag,
-  })
+  $templatehost.each |$resource, $options| {
+    nagios::resource { $resource:
+      resource_type => 'host',
+      *             => $defoptions + $options,
+    }
+  }
 
-  create_resources('nagios::resource', $templateservice, {
-    'resource_type'    => 'service',
-    defaultresourcedef => {},
-    nagiostag          => $nagiostag,
-  })
+  $templateservice.each |$resource, $options| {
+    nagios::resource { $resource:
+      resource_type => 'service',
+      *             => $defoptions + $options,
+    }
+  }
 
-  create_resources('nagios::resource', $templatetimeperiod, {
-    'resource_type'    => 'timeperiod',
-    defaultresourcedef => {},
-    nagiostag          => $nagiostag,
-  })
+  $templatetimeperiod.each |$resource, $options| {
+    nagios::resource { $resource:
+      resource_type => 'timeperiod',
+      *             => $defoptions + $options,
+    }
+  }
 
   # setup the default commands
-  create_resources('nagios::resource', $defaultcommands, {
-    'resource_type'    => 'command',
-    defaultresourcedef => {},
-    nagiostag          => $nagiostag,
-  })
+  $defaultcommands.each |$resource, $options| {
+    nagios::resource { $resource:
+      resource_type => 'command',
+      *             => $defoptions + $options,
+    }
+  }
 
-  create_resources('nagios::resource', $defaultcontacts, {
-    'resource_type'    => 'contact',
-    defaultresourcedef => {},
-    nagiostag          =>  $nagiostag,
-  })
+  $defaultcontacts.each |$resource, $options| {
+    nagios::resource { $resource:
+      resource_type => 'contact',
+      *             => $defoptions + $options,
+    }
+  }
 
-  create_resources('nagios::resource', $defaultcontactgroups, {
-    'resource_type'    => 'contactgroup',
-    defaultresourcedef => {},
-    nagiostag          => $nagiostag,
-  })
+  $defaultcontactgroups.each |$resource, $options| {
+    nagios::resource { $resource:
+      resource_type => 'contactgroup',
+      *             => $defoptions + $options,
+    }
+  }
 
-  create_resources('nagios::resource', $defaulthostgroups, {
-    'resource_type'    => 'hostgroup',
-    defaultresourcedef => {},
-    nagiostag          => $nagiostag,
-  })
+  $defaulthostgroups.each |$resource, $options| {
+    nagios::resource { $resource:
+      resource_type => 'hostgroup',
+      *             => $defoptions + $options,
+    }
+  }
 
   # site local commands
-  create_resources('nagios::resource', $localcommands, {
-    'resource_type'    => 'command',
-    defaultresourcedef => $localcommanddefaults,
-    nagiostag          => $nagiostag,
-  })
+  $localcommands.each |$resource, $options| {
+    nagios::resource { $resource:
+      resource_type      => 'command',
+      defaultresourcedef => $localcommanddefaults,
+      nagiostag          => $nagiostag,
+      *                  => $options,
+    }
+  }
 
-  create_resources('nagios::resource', $localcontacts, {
-    'resource_type'    => 'contact',
-    defaultresourcedef => $localcontactdefaults,
-    nagiostag          => $nagiostag,
-  })
+  $localcontacts.each |$resource, $options| {
+    nagios::resource { $resource:
+      resource_type      => 'contact',
+      defaultresourcedef => $localcontactdefaults,
+      nagiostag          => $nagiostag,
+      *                  => $options,
+    }
+  }
 
-  create_resources('nagios::resource', $localcontactgroups, {
-    'resource_type'    => 'contactgroup',
-    defaultresourcedef => $localcontactgroupdefaults,
-    nagiostag          => $nagiostag,
-  })
+  $localcontactgroups.each |$resource, $options| {
+    nagios::resource { $resource:
+      resource_type      => 'contactgroup',
+      defaultresourcedef => $localcontactgroupdefaults,
+      nagiostag          => $nagiostag,
+      *                  => $options,
+    }
+  }
 
-  create_resources('nagios::resource', $localhostgroups, {
-    'resource_type'    => 'hostgroup',
-    defaultresourcedef => $localhostgroupdefaults,
-    nagiostag          => $nagiostag,
-  })
+  $localhostgroups.each |$resource, $options| {
+    nagios::resource { $resource:
+      resource_type      => 'hostgroup',
+      defaultresourcedef => $localhostgroupdefaults,
+      nagiostag          => $nagiostag,
+      *                  => $options,
+    }
+  }
 }

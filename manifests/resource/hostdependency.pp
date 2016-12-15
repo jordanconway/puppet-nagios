@@ -6,8 +6,7 @@
 #
 # [*resourcedef*]
 #   The resource configuration for the nagios_hostdependency call. This will be
-#   attached to the resource $name in a create_resources configuration
-#   and then create_resources will build a @@nagios_hostdependency object
+#   used in the creation of the exported nagios_hostdependency
 #   Type: hash
 #
 # === Authors
@@ -23,6 +22,7 @@ define nagios::resource::hostdependency (
 ) {
   validate_hash($resourcedef)
 
-  $_myresources = hash([$name, $resourcedef])
-  create_resources('@@nagios_hostdependency', $_myresources)
+  @@nagios_hostdependency { $name:
+    * => $resourcedef,
+  }
 }

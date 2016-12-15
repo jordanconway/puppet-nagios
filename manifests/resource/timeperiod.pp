@@ -6,9 +6,7 @@
 #
 # [*resourcedef*]
 #   The resource configuration for the nagios_timeperiod call. This will
-#   be attached to the resource $name in a create_resources
-#   configuration and then create_resources will build a
-#   @@nagios_timeperiod object
+#   used in the creation of the exported nagios_timeperiod object
 #   Type: hash
 #
 # === Authors
@@ -24,6 +22,7 @@ define nagios::resource::timeperiod (
 ) {
   validate_hash($resourcedef)
 
-  $_myresources = hash([$name, $resourcedef])
-  create_resources('@@nagios_timeperiod', $_myresources)
+  @@nagios_timeperiod { $name:
+    * => $resourcedef
+  }
 }

@@ -199,53 +199,74 @@ class nagios::client (
   }
 
   # create any base services
-  create_resources('nagios::resource', $baseservices, {
-    'resource_type'    => 'service',
-    defaultresourcedef => $defaultserviceconfig,
-    nagiostag          => $nagiostag,
-  })
+  $baseservices.each |$resource, $options| {
+    nagios::resource { $resource:
+      resource_type      => 'service',
+      defaultresourcedef => $defaultserviceconfig,
+      nagiostag          => $nagiostag,
+      *                  => $options,
+    }
+  }
 
   # create any host dependencies
-  create_resources('nagios::resource', $hostdependencies, {
-    'resource_type'    => 'hostdependency',
-    defaultresourcedef => $defaulthostdependencies,
-    nagiostag          => $nagiostag,
-  })
+  $hostdependencies.each |$resource, $options| {
+    nagios::resource { $resource:
+      resource_type      => 'hostdependency',
+      defaultresourcedef => $defaulthostdependencies,
+      nagiostag          => $nagiostag,
+      *                  => $options,
+    }
+  }
 
   # create any hostextinfo
-  create_resources('nagios::resource', $hostextinfo, {
-    'resource_type'    => 'hostextinfo',
-    defaultresourcedef => $defaulthostextinfo,
-    nagiostag          => $nagiostag,
-  })
+  $hostextinfo.each |$resource, $options| {
+    nagios::resource { $resource:
+      resource_type      => 'hostextinfo',
+      defaultresourcedef => $defaulthostextinfo,
+      nagiostag          => $nagiostag,
+      *                  => $options,
+    }
+  }
 
   # create host specific services
-  create_resources('nagios::resource', $hostservices, {
-    'resource_type'    => 'service',
-    defaultresourcedef => $defaultserviceconfig,
-    nagiostag          => $nagiostag,
-  })
+  $hostservices.each |$resource, $options| {
+    nagios::resource { $resource:
+      resource_type      => 'service',
+      defaultresourcedef => $defaultserviceconfig,
+      nagiostag          => $nagiostag,
+      *                  => $options,
+    }
+  }
 
   # create service dependencies
-  create_resources('nagios::resource', $hostservicedependencies, {
-    'resource_type'    => 'servicedependency',
-    defaultresourcedef => $defaultservicedependencies,
-    nagiostag          => $nagiostag,
-  })
+  $hostservicedependencies.each |$resource, $options| {
+    nagios::resource { $resource:
+      resource_type      => 'servicedependency',
+      defaultresourcedef => $defaultservicedependencies,
+      nagiostag          => $nagiostag,
+      *                  => $options,
+    }
+  }
 
   # create service escalations
-  create_resources('nagios::resource', $hostserviceescalation, {
-    'resource_type'    => 'serviceescalation',
-    defaultresourcedef => $defaultserviceescalation,
-    nagiostag          => $nagiostag,
-  })
+  $hostserviceescalation.each |$resource, $options| {
+    nagios::resource { $resource:
+      resource_type      => 'serviceescalation',
+      defaultresourcedef => $defaultservicedependencies,
+      nagiostag          => $nagiostag,
+      *                  => $options,
+    }
+  }
 
   # create service extinfo
-  create_resources('nagios::resource', $hostserviceextinfo, {
-    'resource_type'    => 'serviceextinfo',
-    defaultresourcedef => $defaultserviceextinfo,
-    nagiostag          => $nagiostag,
-  })
+  $hostserviceextinfo.each |$resource, $options| {
+    nagios::resource { $resource:
+      resource_type      => 'serviceextinfo',
+      defaultresourcedef => $defaultserviceextinfo,
+      nagiostag          => $nagiostag,
+      *                  => $options,
+    }
+  }
 
   # install all specified plugins
   package { $plugins:

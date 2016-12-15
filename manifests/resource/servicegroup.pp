@@ -6,9 +6,8 @@
 #
 # [*resourcedef*]
 #   The resource configuration for the nagios_servicegroup call. This
-#   will be attached to the resource $name in a create_resources
-#   configuration and then create_resources will build a
-#   @@nagios_servicegroup object
+#   will be used in the creation of the exported nagios_servicegroup
+#   object
 #   Type: hash
 #
 # === Authors
@@ -24,6 +23,7 @@ define nagios::resource::servicegroup (
 ) {
   validate_hash($resourcedef)
 
-  $_myresources = hash([$name, $resourcedef])
-  create_resources('@@nagios_servicegroup', $_myresources)
+  @@nagios_servicegroup { $name:
+    * => $resourcedef,
+  }
 }
